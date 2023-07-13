@@ -1,0 +1,274 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Email</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+       
+    <title>Email</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+    <style>
+        .form {
+            background:rgb(243,243,243);
+            padding: 40px;
+            max-width:600px;
+            margin:30px auto;
+          }
+          
+          .form-small {
+            background:rgba(255, 255, 255, 0.856);
+            padding: 40px;
+            max-width:600px;
+            margin:10px auto;
+          }
+          
+          .h1-font {
+              font-family: Lobster;
+              text-align: center;
+          }
+          
+          .contact-font {
+              font-family: Indie Flower;
+              font-style: italic;
+              text-align: center;
+              color: rgb(111,111,111);
+          }
+          
+          .p-font {
+              margin: 20px 10px 20px;
+              font-size: 20px;  
+              font-family: 'Times New Roman', Times, serif;
+              text-align: center;
+          }
+          
+          .p-footer {
+              margin: 20px 10px 20px;
+              padding: 10px 50px 0px;
+              font-size: 11px;  
+              font-family: Arial, Helvetica, sans-serif;
+              text-align: center;
+          }
+          
+          /* .mail-image {
+              padding: 0px;
+              max-width:600px;
+              margin:10px auto;
+          } */
+          
+          /* Button */
+          :root {
+              --bg: rgb(243,243,243);
+              --color: rgb(255,178,0);
+              --font: Montserrat, Roboto, Helvetica, Arial, sans-serif;
+          }
+          
+          .wrapper {
+              
+              filter: url('#goo');
+          }
+          
+          .button {
+              display: inline-block;
+              text-align: center;
+              background: orange;
+              color: white;
+              font-weight: bold;
+              padding: 1.18em 1.32em 1.03em;
+              line-height: 1;
+              border-radius: 1em;
+              position: relative;
+              min-width: 8.23em;
+              text-decoration: none;
+              font-family: var(--font);
+              font-size: 1.75rem;
+              margin-bottom: 40px;
+          }
+          
+          .button:before,
+          .button:after {
+              width: 4.4em;
+              height: 2.95em;
+              position: absolute;
+              content: "";
+              display: inline-block;
+              background: orange;
+              border-radius: 50%;
+              transition: transform 0.3s ease;
+              transform: scale(0);
+              z-index: -1;
+          }
+          
+          .button:before {
+              top: -25%;
+              left: 20%;
+          }
+          
+          .button:after {
+              bottom: -25%;
+              right: 20%;
+          }
+          
+          .button:hover:before,
+          .button:hover:after {
+              transform: none;
+          }
+          
+          
+          /* Demo styles */
+          
+          body {
+              width: 100%;
+              height: 100%;
+              min-height: 100vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background: var(--bg)
+          }
+          
+          /* End Button */
+          
+          
+          /* Icon Social */
+          
+          
+          
+          /* Base Styles */
+          
+          
+          
+          .social-buttons {
+            margin: auto;
+            font-size: 0;
+            text-align: center;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+          }
+          
+          .social-button {
+            display: inline-block;
+            background-color: #fff;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            margin: 0 10px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: .99;
+            border-radius: 50%;
+            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.05);
+            -webkit-transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+            transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+          }
+          .social-button:before {
+            content: '';
+            background-color: #000;
+            width: 120%;
+            height: 120%;
+            position: absolute;
+            top: 90%;
+            left: -110%;
+            -webkit-transform: rotate(45deg);
+                    transform: rotate(45deg);
+            -webkit-transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+            transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+          }
+          .social-button .fa {
+            font-size: 38px;
+            vertical-align: middle;
+            -webkit-transform: scale(0.8);
+                    transform: scale(0.8);
+            -webkit-transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+            transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+          }
+          /* //Facbook */
+          .social-button.facebook:before {
+            background-color: #3B5998;
+          }
+          .social-button.facebook .fa {
+            color: #3B5998;
+          }
+          
+          /* //Twitter */
+          .social-button.twitter:before {
+            background-color: #55acee;
+          }
+          .social-button.twitter .fa {
+            color: #55acee;
+          }
+          
+          /* //Google Plus */
+          .social-button.google:before {
+            background-color: #dd4b39;
+          }
+          .social-button.google .fa {
+            color: #dd4b39;
+          }
+          
+          .social-button:focus:before, .social-button:hover:before {
+            top: -10%;
+            left: -10%;
+          }
+          .social-button:focus .fa, .social-button:hover .fa {
+            color: #fff;
+            -webkit-transform: scale(1);
+                    transform: scale(1);
+          }
+          
+          .logo {
+              font-family: 'Lobster', cursive;
+              font-size: 4em;
+              font-weight: 400;
+              float: left;
+              padding: 5px;
+              margin-top: 25px;
+          }
+          
+          /* Transitions */
+          
+          header, .logo{
+              -webkit-transition: all 1s;
+                    transition: all 1s; 
+          }
+          
+        
+    </style>
+
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+
+       
+    </head>
+
+    <body style="background-color: rgb(136,189,191)">
+        <div class="form" style="background-image: url('https://img.freepik.com/free-vector/flat-geometric-background_23-2148957201.jpg?w=826&t=st=1688708146~exp=1688708746~hmac=70cf5764fe87e27c9dd8ada8051d0bc6cdcda5e657efa9bb42b4f023e5dab289'); background-size: cover;width: 100%;">
+            <div class="form-small" style="padding: 0px">
+                <div>
+                    <img class="mail-image" alt="top image" src="https://img.freepik.com/premium-vector/pdf-format-file-template-your-design_97886-11001.jpg?w=740" style="width: 50px;">
+                </div>
+                <h1 class="h1-font">Download Request Granted - eReposity | JHCSC<h1>
+                <p class="p-font">Hey Visitor, thank you so much for taking the time to download and read our 
+                    capstone/thesis files. We truly appreciate your interest. <br><br></p>
+                <p class='p-font'>Please click on the following link to download the file:</p>
+                <div class="wrapper">
+                   <center><a class="button" href="http://127.0.0.1:8000/download/{{ token }}/">File download</a></center>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    </body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>

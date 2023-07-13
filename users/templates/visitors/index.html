@@ -1,0 +1,253 @@
+{% load static  %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+  <title>
+    eRepository|Jhcsc
+  </title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.3.0/pdf.min.js"></script>
+  
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <!-- Nucleo Icons -->
+    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link id="pagestyle" href="{% static 'css/card.css' %}" rel="stylesheet" />
+    <link id="pagestyle" href="{% static 'css/visitors-style.css' %}" rel="stylesheet" />
+    <style>
+      .login-button{
+        position: absolute;
+        right:10px;
+        bottom:60px;
+      }
+
+    </style>
+</head>
+
+<body class=" bg-gray-200" style="overflow-x: hidden;">
+
+
+  
+  <div class="main-content  max-height-vh-100 h-100">
+    <!-- Navbar -->
+    
+    <!-- End Navbar -->
+    <div class="mb-4">
+      <div class="page-header min-height-400" style="background-image: url('../../static/img/visitorbg.jpg');">
+        
+        <span class="mask opacity-8">
+          <center><h1 class="display-1 text-white bg-dark mt-7 p-4">WELCOME RESEARCHER</h1></center>
+        </span>
+
+        <a href="{% url 'signin' %}" class="login-button btn btn-white text-black text-capitalize">Admin/Staff Login</a>
+      </div>
+      <div class="card card-body mt-n6" style="z-index: 200; background-color:#bff1c4;">
+        <div class="row gx-4">
+          <div class="col-auto">
+            <div class="avatar avatar-xl position-relative">
+              <img src="{% static 'img/logo.png' %}" alt="profile_image" class="w-100 border-radius-lg">
+            </div>
+          </div>
+          <div class="col-auto my-auto">
+            <div class="h-100">
+              <h5 class="border-bottom border-dark border-3" style="font-size:26px; font-weight:bolder;">
+                JHCSC | eRepository 
+              </h5>
+              <p class="mb-0 font-weight-bold text-sm">
+                Online storage for Theses and Capstones
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-reverse col-md-3 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+            <div class="nav-wrapper flex-row-reverse align-items-center">
+                  
+                  <div class="dropdown" style="float:right;">
+                    <span class="program text-dark">Filter by:</span>
+                    <button class="btn btn-info p-2 text-dark mt-1 text-capitalize program">Program 
+                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#000}</style><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+                    </button>
+                    <div class="dropdown-content" >
+                      <a href="BSIT">BSIT</a>
+                      <a href="BSED">BSED</a>
+                      <a href="BEED">BEED</a>
+                      <a href="BSSW">BSSW</a>
+                      <a href="BAPos">BAPos</a>
+                      <a href="BAELS">BAELS</a>
+                      <a href="BSM">BSM</a>
+                      <a href="BSA">BSA</a>
+                      <a href="BSF">BSF</a>
+                      <a href="BSES">BSES</a>
+                      <a href="BSCE">BSCE</a>
+                    </div>
+                  </div>
+                
+                  <div class="input-group">
+                    <div class="input-group">
+                      <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                      <input type="text" class="form-control" id="searchInput" placeholder="Search here...">
+                    </div>
+                  </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 mt-4">
+          <div class=" mb-4">
+            <div class="card-header pb-0">
+            </div>
+            <div id="itemsContainer">             
+              <div class=" card-body"> 
+                <div class="row">
+                  {% for manuscript_item in manuscripts %}
+                  <div class="box col-md-4 col-lg-3 pb-3">
+                    <div class="card card-custom bg-white border-white border-0">
+                      <div class="card-custom-img">
+                        <div class="pdf-container ">
+                          <embed src="{{ manuscript_item.filename.url }}#toolbar=0&navpanes=0&scrollbar=0&view=FitH" height="330px" width="100%" type="application/pdf" type="text/html" src="source"></embed>
+                          <div class="overlay"></div>
+                        </div>
+                      </div>
+                      <div class="card-custom-avatar">
+                        {% if manuscript_item.program == 'BSIT' %}
+                          <img class="img-fluid" src="{% static 'img/logos/BSIT.png' %}" draggable="false" alt="BSIT LOGO" />
+                        {% elif manuscript_item.program == 'SAFES' %}
+                          <img class="img-fluid" src="{% static 'img/logos/SAFES.png' %}" draggable="false" alt="SAFES LOGO" />
+                        {% elif manuscript_item.program == 'BSA' %}
+                          <img class="img-fluid" src="{% static 'img/logos/SAFES.png' %}" draggable="false" alt="SAFES LOGO" />
+                        {% elif manuscript_item.program == 'STE' %}
+                          <img class="img-fluid" src="{% static 'img/logos/STE.png' %}" draggable="false" alt="STE LOGO" />
+                        {% else %}
+                          <img class="img-fluid" src="{% static 'img/logos/BSSW.png' %}" draggable="false" alt="STE LOGO" />
+                        {% endif %}
+                        
+                      </div>
+                      <span class="text-md downloads">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+                      </svg> {{ manuscript_item.downloads}} downloads
+                    </span>
+                      <div class="card-custom-year">
+                        <p class="btn btn-info">{{ manuscript_item.year }}</p>
+                      </div>
+                      <div class="card-body" style="overflow-y: auto">
+                        <h6 class="card-title">{{ manuscript_item.title}} - <span class="text-info">{{ manuscript_item.program }}</span>
+                        
+                        </h6>
+                        <p class="text-sm"><b>Authors:</b> {{ manuscript_item.authors }}</p>
+                      </div>
+                      <div class="card-footer">
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#download{{manuscript_item.id}}">Download</button>
+                        <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#view{{manuscript_item.id}}">View</button>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer pt-4 p-4" style="background-color: #bff1c4;">
+      <div class="container-fluid">
+          <div class="copyright text-center text-sm text-dark text-lg-start">
+           <center>Copyright © JHCSC Main | All Rights Reserved <img src="{% static 'img/fb.png' %}" class="ml-2" width="25" alt=""> </center> 
+          </div>
+      </div>
+    </footer>
+  </div>
+
+
+  <!-- For view PDF -->
+  {% for manuscript_item in manuscripts %}
+  <div class="modal fade" id="view{{manuscript_item.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content p-3">
+        <p class="text-lg text-dark mb-4">You're viewing <b>{{manuscript_item.title}}</b> File.</p>
+        
+        <div class="pdf-container-view">
+          <embed src="{{ manuscript_item.filename.url }}#toolbar=0&page={{ manuscript_item.abstractES_num }}&navpanes=0&scrollbar=0&view=FitH" width="100%" type="application/pdf" type="text/html" src="source"></embed>
+          <div class="overlay-view"></div>
+        </div>
+
+        <button class="btn btn-secondary mt-4" style="width: 100px; z-index:200;" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <!-- For view PDF end -->
+
+
+
+  <!-- for download request -->
+  {% for manuscript_item in manuscripts %}
+  <div class="modal fade" id="download{{manuscript_item.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content p-3">
+        <p class="text-lg text-dark mb-4">Request Download for <b>{{manuscript_item.title}}</b>.</p>
+        
+        <form method="POST" action="{% url 'visitor_index' %}"  enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="download" placeholder="Enter email">
+            <small id="download" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <input style="opacity: 0; display:none;" type="text" name="file_link" class="form-control" value="{{manuscript_item.filename.url}}">
+            <input style="opacity: 0; display:none;" type="text" name="file_name" class="form-control" value="{{manuscript_item.id}}">
+          </div>
+          <button type="submit" class="btn btn-info">Send Request</button>
+          <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <!-- for download request end -->
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const itemsContainer = document.getElementById('itemsContainer');
+    const items = itemsContainer.getElementsByClassName('box');
+  
+    searchInput.addEventListener('input', function() {
+      const query = searchInput.value.toLowerCase();
+  
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const text = item.innerText.toLowerCase();
+  
+        if (text.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      }
+    });
+  </script>
+  
+  <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
+  <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/core/popper.min.js' %}"></script>
+  <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+  
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

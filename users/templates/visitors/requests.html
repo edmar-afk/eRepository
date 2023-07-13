@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    <title>THANK YOU</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-image: url('../../static/img/thanks.jpg'); background-size:cover; height:100%; background-attachment:fixed;">
+    <div class="vh-100 d-flex justify-content-center align-items-center">
+        <div class="col-md-4" style="opacity: .8;">
+            <div class="border border-3 border-success"></div>
+            <div class="card  bg-white shadow p-5">
+                <div class="mb-4 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-success" width="75" height="75"
+                        fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <h4>Thank You for downloading </h4>
+                    <h5 style="color:green;">{{name}}</h5> <br>
+                    <p>Thank you for downloading the file! Your support is greatly appreciated. </p>
+                    <a href="{% url 'visitor_index' %}" class="btn btn-outline-success">Back Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p id="id">{{id_file}}</p>
+    <p id="click-count">{{downloads}}</p>
+    <a id="click-text" href="{{file}}" download="{{name}}">Hello</a>
+
+    <script>
+        window.onload = function(fileUrl) {
+          
+            var link = document.createElement('a');
+            link.style.display = 'none';
+            document.body.appendChild(link);
+          
+           
+            link.href = fileUrl;
+          
+          
+            link.download = '{{name}}';
+          
+         
+            link.click();
+          
+            
+            document.body.removeChild(link);
+          };
+          
+         
+          var fileUrl = '{{file}}';
+          
+          
+          window.onload(fileUrl);
+          
+    </script>
+</body>
+</html>

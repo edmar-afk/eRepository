@@ -1,0 +1,547 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+  <title>
+    eRepository | Jhcsc
+  </title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/owl.carousel.min.css' %}">
+
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/carousel.css' %}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{% static 'css/style.css' %}" rel="stylesheet" />
+</head>
+
+<body class="g-sidenav-show  bg-gray-100">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href="#" target="_blank">
+        <img src="{% static 'img/logo.png' %}" class="navbar-brand-img h-100">
+        <span class="ms-1 font-weight-bold">eRepository | JHCSC</span>
+      </a>
+    </div>
+    
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+
+        <li class="nav-item">
+          <a class="nav-link  bg-white" href="{% url 'dashboard' %}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-success text-center me-2 d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path style="color:white;" d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/></svg>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'manuscripts' %}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path style="color:#333;" d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Manuscripts</span>
+          </a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item" style="opacity: 0; display:none;">
+          <a class="nav-link" href="{% url 'users' %}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path style="color:#333;" d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z"/>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Staffs</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'users' %}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path style="color:#333;" d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z"/>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Staffs</span>
+          </a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link  " href="{% url 'requests' %}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path style="color:#333;" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Requests</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="sidenav-footer mx-3 ">
+        <ul class="navbar-nav">
+          <li class="nav-item mt-3">
+            <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  " href="{% url 'logout' %}">
+              <div class="shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.3em" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M208 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM123.7 200.5c1-.4 1.9-.8 2.9-1.2l-16.9 63.5c-5.6 21.1-.1 43.6 14.7 59.7l70.7 77.1 22 88.1c4.3 17.1 21.7 27.6 38.8 23.3s27.6-21.7 23.3-38.8l-23-92.1c-1.9-7.8-5.8-14.9-11.2-20.8l-49.5-54 19.3-65.5 9.6 23c4.4 10.6 12.5 19.3 22.8 24.5l26.7 13.3c15.8 7.9 35 1.5 42.9-14.3s1.5-35-14.3-42.9L281 232.7l-15.3-36.8C248.5 154.8 208.3 128 163.7 128c-22.8 0-45.3 4.8-66.1 14l-8 3.5c-32.9 14.6-58.1 42.4-69.4 76.5l-2.6 7.8c-5.6 16.8 3.5 34.9 20.2 40.5s34.9-3.5 40.5-20.2l2.6-7.8c5.7-17.1 18.3-30.9 34.7-38.2l8-3.5zm-30 135.1L68.7 398 9.4 457.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L116.3 441c4.6-4.6 8.2-10.1 10.6-16.1l14.5-36.2-40.7-44.4c-2.5-2.7-4.8-5.6-7-8.6zM550.6 153.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L530.7 224H384c-17.7 0-32 14.3-32 32s14.3 32 32 32H530.7l-25.4 25.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l80-80c12.5-12.5 12.5-32.8 0-45.3l-80-80z"/></svg>
+              </div>
+              <span class="nav-link-text ms-1">Logout</span>
+            </a>
+          </li>
+        </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    
+    {% include 'admin/includes/navbar-dashboard.html' %}
+    
+
+    <div class="container-fluid py-4" style="overflow-x: hidden;">
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Downloads</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{total_downloads}}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
+                    <i class="fa fa-download text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Librarian Staffs</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ librarians_count }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
+                    <i class="fa fa-user-circle text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Manuscripts</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ manuscripts_count }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
+                    <i class="fa fa-book text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Visitors</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      101112
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
+                    <i class="fa fa-street-view text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-lg-7 mb-lg-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                {% if user.is_authenticated %}
+                <div class="col-lg-6">
+                  <div class="d-flex flex-column h-100">
+                    <p class="mb-1 pt-2 text-bold">How's your day?</p>
+                    <h5 class="font-weight-bolder">{{ user.first_name }}</h5>
+                    <p class="mb-5"> You play a vital role in ensuring its 
+                      smooth operation and providing a seamless experience for all users.</p>
+                  </div>
+                </div>
+                {% endif %}
+
+                {% if not user.is_authenticated %}
+                <div class="col-lg-6">
+                  <div class="d-flex flex-column h-100">
+                    <p class="mb-1 pt-2 text-bold">How's your day?</p>
+                    <h5 class="font-weight-bolder">Admin</h5>
+                    <p class="mb-5"> You play a vital role in ensuring its 
+                      smooth operation and providing a seamless experience for all users.</p>
+                  </div>
+                </div>
+                {% endif %}
+                <div class="col-lg-5 ms-auto text-center mt-5 mt-lg-0">
+                  <div class="bg-gradient-secondary border-radius-lg h-100">
+                    <div class="position-relative d-flex align-items-center justify-content-center h-100">
+                      <img class="w-100 position-relative z-index-2 pt-4" src="{% static 'img/logo.png' %}" alt="rocket">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 mb-4">
+          <div class="card h-100 p-3">
+            <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100">
+              <span class="mask bg-gradient-dark"></span>
+              <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                <div class="d-flex flex-row">
+                  <h5 class="text-white font-weight-bolder mb-4 pt-2">It's 36° today!</h5>
+                  <img src="{% static 'img/hot_weather.png'%}" width="25" height="30" alt="">
+                </div>
+                <p class="text-white"><b class="text-warning">Stay hydrated.</b> Drink plenty of water throughout the day to prevent dehydration. Avoid excessive alcohol and 
+                  caffeinated beverages, as they can dehydrate you further.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section id="slider" class="pt-5">
+          <div class="container">
+            
+            <div class="slider">
+                <div class="owl-carousel">
+                  <div class="slider-card">
+                      <div class="card h-100 p-3 mb-3">
+                        <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/BSIT.png');">
+                          <span class="mask bg-gradient-translucent"></span>
+                          <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                            <div class="d-flex flex-row">
+                              <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BSIT <br> <b style="color:green;"> {{bsit_count}} </b>Manuscripts</h3>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    
+                  </div>
+    
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/STE.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BSED <br> <b style="color:green;"> {{bsed_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/STE.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BEED <br> <b style="color:green;"> {{beed_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+    
+                   <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/BSSW.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BSSW <br> <b style="color:green;"> {{bssw_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+    
+                  
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/BSSW.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BAPos <br> <b style="color:green;"> {{bapos_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/BSSW.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BAELS <br> <b style="color:green;"> {{baels_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/BSSW.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BSM <br> <b style="color:green;"> {{bsm_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/SAFES.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BSA <br> <b style="color:green;"> {{bsa_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/SAFES.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BSF <br> <b style="color:green;"> {{bsf_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/BSIT.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BSES <br> <b style="color:green;"> {{bses_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="card h-100 p-3 mb-3">
+                      <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../../static/img/deptlogo/BSIT.png');">
+                        <span class="mask bg-gradient-translucent"></span>
+                        <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+                          <div class="d-flex flex-row">
+                            <h3 class="text-black font-weight-bolder mt-7 mb-2 pt-2">BSCE <br> <b style="color:green;"> {{bsce_count}} </b>Manuscripts</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </section>
+    </div>
+
+
+
+
+      
+      <div class="row my-4">
+        <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="row">
+                <div class="col-lg-6 col-7">
+                  <h6>Recently uploaded Manuscripts</h6>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for items in manuscripts %}
+                      <tr>
+                        <td>
+                          <div class="d-flex px-2 py-1">
+                            <div class="avatar avatar-sm me-3">
+                              <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <path  d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384V304H176c-35.3 0-64 28.7-64 64V512H64c-35.3 0-64-28.7-64-64V64zm384 64H256V0L384 128zM176 352h32c30.9 0 56 25.1 56 56s-25.1 56-56 56H192v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V448 368c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24H192v48h16zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H304c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H320v96h16zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V432 368z"/>
+                              </svg>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center">
+                              <h6 class="mb-0 text-sm">{{ items.title }}</h6>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100">
+            <div class="card-header pb-0">
+              <div class="row">
+                <div class="col-lg-6 col-7">
+                  <h6>Recent Requests</h6>
+                </div>
+                
+              </div>
+            </div>
+    
+           
+            <div class="card-body p-3">
+              <div class="timeline timeline-one-side">
+                {% for visitors in requests %}
+                <div class="timeline-block">
+                  <span class="timeline-step">
+                    <i class="ni ni-bell-55 text-success text-gradient"></i>
+                  </span>
+                  <div class="timeline-content">
+                    <h6 class="text-dark text-sm font-weight-bold mb-0">{{ visitors.email }}</h6>
+                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{ visitors.requested_date }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    
+    </div>
+
+    
+  </main>
+
+  <!--   Core JS Files   -->
+  <script src="{% static 'js/core/popper.min.js' %}"></script>
+  <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+  <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+ 
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script> 
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" ></script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
+  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+
+  <script>
+    // Owlcarousel
+$(document).ready(function(){
+  $(".owl-carousel").owlCarousel({
+  	loop:true,
+    margin:10,
+    nav:true,
+	autoplay:true,
+    autoplayTimeout:3000,
+    autoplayHoverPause:true,
+    center: true,
+    navText: [
+	    "<i class='fa fa-angle-left'></i>",
+	    "<i class='fa fa-angle-right'></i>"
+	],
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:1
+        },
+        1000:{
+            items:3
+        }
+    }
+  });
+});
+  </script>
+</body>
+
+</html>
