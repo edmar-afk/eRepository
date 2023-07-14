@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
 
+
 now = timezone.now()
 
 class Librarian(models.Model):
@@ -33,3 +34,13 @@ class Visitors(models.Model):
     filename = models.ForeignKey(Manuscripts, on_delete=models.CASCADE)
     requests_email_token = models.CharField(max_length=250)
     requested_date = models.DateTimeField(auto_now_add=True)
+    
+
+class VisitorCount(models.Model):
+    count = models.PositiveIntegerField(default=0)
+
+class VisitorView(models.Model):
+    ip_address = models.GenericIPAddressField()
+    user_agent = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    anonymous_uuid = models.UUIDField(null=True, blank=True, unique=True)

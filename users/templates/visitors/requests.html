@@ -32,10 +32,6 @@
             </div>
         </div>
     </div>
-    <p id="id">{{id_file}}</p>
-    <p id="click-count">{{downloads}}</p>
-    <a id="click-text" href="{{file}}" download="{{name}}">Hello</a>
-
     <script>
         window.onload = function(fileUrl) {
           
@@ -43,11 +39,11 @@
             link.style.display = 'none';
             document.body.appendChild(link);
           
-           
+            var fileUrl = '{{file}}';
             link.href = fileUrl;
           
           
-            link.download = '{{name}}';
+            link.download = '{{file}}';
           
          
             link.click();
@@ -57,7 +53,7 @@
           };
           
          
-          var fileUrl = '{{file}}';
+          
           
           
           window.onload(fileUrl);

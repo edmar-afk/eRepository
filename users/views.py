@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Manuscripts, Librarian, Visitors, Staffs
+from .models import Manuscripts, Librarian, Visitors, Staffs, VisitorView, VisitorCount
 from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User, auth
@@ -10,6 +10,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.db.models import Sum
+import requests
+from django.utils import timezone
+from django.contrib.sessions.models import Session
+from uuid import uuid4
 # Create your views here.
 
 
@@ -17,8 +21,10 @@ def dashboard(request):
     manuscripts_count = Manuscripts.objects.all().count()
     requests_count = Visitors.objects.all()
     librarians_count = User.objects.all().count()
+    visitors_view_count = VisitorView.objects.count()
+    
     manuscripts = Manuscripts.objects.order_by('-id')[:5]
-    requests = Visitors.objects.order_by('-id')[:5]
+    requests_order = Visitors.objects.order_by('-id')[:5]
     
     bsit_count = Manuscripts.objects.filter(program='BSIT').count()
     bsed_count = Manuscripts.objects.filter(program='BSED').count()
@@ -34,12 +40,39 @@ def dashboard(request):
     
     downloads = Manuscripts.objects.values('downloads').all()
     total_downloads = downloads.aggregate(Sum('downloads'))['downloads__sum']
+    
+    api_key = '45b01a7f6a9893cc9370a6fd91f105fb'
+    url = f"http://api.openweathermap.org/data/2.5/forecast?q=mati&appid={api_key}"
+    w_dataset = requests.get(url).json()
+
+    
     context = {
+        
+        "city_name":w_dataset["city"]["name"],
+        "city_country":w_dataset["city"]["country"],
+        "wind":w_dataset['list'][0]['wind']['speed'],
+        "degree":w_dataset['list'][0]['wind']['deg'],
+        "status":w_dataset['list'][0]['weather'][0]['description'],
+        "cloud":w_dataset['list'][0]['clouds']['all'],
+        'date':w_dataset['list'][0]["dt_txt"],    
+        "temp": round(w_dataset["list"][0]["main"]["temp"] -273.0),
+        "pressure":w_dataset["list"][0]["main"]["pressure"],
+        "humidity":w_dataset["list"][0]["main"]["humidity"],
+        "icon":w_dataset["list"][0]["weather"][0]["icon"],
+        "icon1":w_dataset["list"][1]["weather"][0]["icon"],
+        "icon2":w_dataset["list"][2]["weather"][0]["icon"],
+        "icon3":w_dataset["list"][3]["weather"][0]["icon"],
+        "icon4":w_dataset["list"][4]["weather"][0]["icon"],
+        "icon5":w_dataset["list"][5]["weather"][0]["icon"],
+        "icon6":w_dataset["list"][6]["weather"][0]["icon"],
+        
+        
         "manuscripts_count" : manuscripts_count,
         "manuscripts" : manuscripts,
         "librarians_count" : librarians_count,
         "requests_count" : requests_count,
-        "requests" : requests,
+        "visitors_view_count" : visitors_view_count,
+        "requests" : requests_order,
         "bsit_count" : bsit_count,
         "bsed_count" : bsed_count,
         "beed_count" : beed_count,
@@ -124,7 +157,7 @@ def users(request):
 
 
 
-def requests(request):
+def requests_view(request):
     visitors = Visitors.objects.all().order_by('-id')
     context = {'visitor': visitors}
     
@@ -209,6 +242,42 @@ def visitor_index(request):
         new_requests = Visitors(email=email, file_link=fileLink, filename_id=fileName, requests_email_token=token)
         new_requests.save()
     
+    
+    # Retrieve the visitor count object, or create a new one if it doesn't exist yet
+    visitor_count, created = VisitorCount.objects.get_or_create(pk=1)
+
+    if created:
+        visitor_count.count = 1
+        visitor_count.save()
+
+    ip_address = request.META.get('REMOTE_ADDR')
+    user_agent = request.META.get('HTTP_USER_AGENT')
+
+    try:
+        visitor = VisitorView.objects.get(ip_address=ip_address, user_agent=user_agent)
+    except VisitorView.DoesNotExist:
+        anonymous_uuid = uuid4()  # Generate a new UUID for anonymous users
+        visitor = VisitorView.objects.create(ip_address=ip_address, user_agent=user_agent, anonymous_uuid=anonymous_uuid)
+
+    count_visitor = VisitorView.objects.count()
+
+    # Get the current time
+    current_time = timezone.now()
+
+    # Get all the sessions that are currently active
+    sessions = Session.objects.filter(expire_date__gte=current_time)
+
+    # Initialize a counter for anonymous users
+    anonymous_user_count = 0
+
+    # Iterate through each session and check if the user is anonymous
+    for session in sessions:
+        session_data = session.get_decoded()
+        if '_auth_user_id' not in session_data:
+            anonymous_user_count += 1
+
+
+
     context = {
         'manuscripts' : manuscripts
     }
@@ -259,3 +328,15 @@ def signin(request):
 def logoutUser(request):
     auth.logout(request)
     return redirect('signin')
+
+class PageViewMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if not request.user.is_authenticated:
+            # Store the anonymous user's IP address and timestamp
+            PageView.objects.create(ip_address=request.META['REMOTE_ADDR'])
+        
+        response = self.get_response(request)
+        return response
