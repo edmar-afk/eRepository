@@ -6,6 +6,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff">
   <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
   <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
   <title>
@@ -27,6 +30,8 @@
   <link href="{% static 'css/carousel.css' %}" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{% static 'css/style.css' %}" rel="stylesheet" />
+
+  <link rel="manifest" href="{% static 'js/manifest.json' %}">
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -207,35 +212,42 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col-lg-7 mb-lg-0 mb-4">
-          <div class="card">
+        <div class="col-lg-7 mb-lg-0 mb-6">
+          {% if time == 'evening' %}
+          <div class="card text-white" style="background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.404), rgba(0, 0, 0, 0.171)), url('../../static/img/evening.png'); background-size:cover;">
+          
+            {% elif time == 'noon' %}
+          <div class="card text-white" style="background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.404), rgba(0, 0, 0, 0.171)), url('../../static/img/afternoon.jpg'); background-size:cover;">
+          
+            {% else %}
+          <div class="card text-white" style="background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.404), rgba(0, 0, 0, 0.425)), url('../../static/img/morning.png'); background-size:cover;">
+          
+          {% endif %}
             <div class="card-body p-3">
               <div class="row">
                 {% if user.is_authenticated %}
-                <div class="col-lg-6">
+                <div class="col-lg-7 text-center mb-5">
                   <div class="d-flex flex-column h-100">
-                    <p class="mb-1 pt-2 text-bold">How's your day?</p>
-                    <h5 class="font-weight-bolder">{{ user.first_name }}</h5>
-                    <p class="mb-5"> You play a vital role in ensuring its 
+                    <p class="mb-1 pt-2 text-bold mt-4">{{ greeting }} <b class="text-warning"> {{ user.first_name }} </b><br>How's your {{ time }}?</p>
+                    <p class="mt-3"> You play a vital role in ensuring its 
                       smooth operation and providing a seamless experience for all users.</p>
                   </div>
                 </div>
                 {% endif %}
 
                 {% if not user.is_authenticated %}
-                <div class="col-lg-6">
+                <div class="col-lg-7 text-center mb-5">
                   <div class="d-flex flex-column h-100">
-                    <p class="mb-1 pt-2 text-bold">How's your day?</p>
-                    <h5 class="font-weight-bolder">Admin</h5>
-                    <p class="mb-5"> You play a vital role in ensuring its 
+                    <p class="mb-1 pt-2 text-bold mt-4">{{ greeting }} <b class="text-warning"> Admin </b><br>How's your {{ time }}?</p>
+                    <p class="mt-3"> You play a vital role in ensuring its 
                       smooth operation and providing a seamless experience for all users.</p>
                   </div>
                 </div>
                 {% endif %}
-                <div class="col-lg-5 ms-auto text-center mt-5 mt-lg-0">
-                  <div class="bg-gradient-secondary border-radius-lg h-100">
+                <div class="col-lg-5 ms-auto text-center">
+                  <div class="border-radius-lg h-100">
                     <div class="position-relative d-flex align-items-center justify-content-center h-100">
-                      <img class="w-100 position-relative z-index-2 pt-4" src="{% static 'img/logo.png' %}" draggable="false" alt="rocket">
+                      <h1 class="text-white" id="clock" class="w-100 position-relative z-index-2 mb-4"></h1>
                     </div>
                   </div>
                 </div>
@@ -532,6 +544,8 @@
     
   </main>
 
+  
+
   <!--   Core JS Files   -->
   <script src="{% static 'js/core/popper.min.js' %}"></script>
   <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
@@ -546,9 +560,24 @@
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
   <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    function updateTimer() {
+        const timerElement = document.getElementById('clock');
+        const currentTime = new Date();
+        let hours = currentTime.getHours();
+        const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+        const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour format.
+
+        const formattedTime = `${hours}:${minutes}:${seconds} ${ampm}`;
+        timerElement.textContent = formattedTime;
+    }
+
+    setInterval(updateTimer, 1000);
+  </script>
+
   <script>
     // Owlcarousel
 $(document).ready(function(){
@@ -584,6 +613,7 @@ $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();
     });
   </script>
+
 </body>
 
 </html>

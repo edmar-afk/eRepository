@@ -1,0 +1,60 @@
+{% load static %}
+<div class="row">
+
+  <div class="col-md-6 mt-2">
+    <div class="card h-100">
+      <div class="card-header pb-0 px-3">
+        <div class="row">
+          <div class="mb-4">
+            <h6>Add Materials</h6>
+          </div>
+          <form method="POST" action="{% url 'manuscripts' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="inputAddress">Material Title</label>
+              <input type="text" name="title" class="form-control" id="inputAddress" placeholder="Title of the File"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="inputAddress2">Author/s</label>
+              <input type="text" name="authors" class="form-control" id="inputAddress2"
+                placeholder="Edmar Jay Heolin, Jay Smith, Edmar Smith" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="program">Programs:</b></label>
+              <select class="form-select" name="program">
+                <option selected value="BSIT">BSIT</option>
+                <option value="BSED">BSED</option>
+                <option value="BEED">BEED</option>
+                <option value="BSSW">BSSW</option>
+                <option value="BAPos">BAPos</option>
+                <option value="BAELS">BAELS</option>
+                <option value="BSM">BSM</option>
+                <option value="BSA">BSA</option>
+                <option value="BSF">BSF</option>
+                <option value="BSES">BSES</option>
+                <option value="BSCE">BSCE</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="year">Year</label>
+              <input type="text" name="year" class="form-control" id="year">
+            </div>
+
+            <div class="form-group">
+              <label for="inputAbstractES">Abstract/Executive Summary Page No.</label>
+              <input type="number" name="abstractESNum" class="form-control" id="inputAbstractES">
+            </div>
+
+            <button type="submit" class="btn btn-info">Submit</button>
+            <button class="btn btn-danger" data-dismiss="modal">Close</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

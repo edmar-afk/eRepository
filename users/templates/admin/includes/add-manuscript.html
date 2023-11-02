@@ -1,109 +1,112 @@
 {% load static %}
-{% load static %}
-
 <div class="row">
 
-    <div class="col-md-6 mt-2">
-      <div class="card h-100">
-        <div class="card-header pb-0 px-3">
-          <div class="row">
-            <div >
-              <h6 class="mb-4">Add Materials</h6>
-            </div>
-            <form method="POST" action="{% url 'manuscripts' %}"  enctype="multipart/form-data">
-              {% csrf_token %}
-
-                    <div class="form-group">
-                      <label for="inputAddress">Material Title</label>
-                      <input type="text" name="title" class="form-control" id="inputAddress" placeholder="Title of the File" required>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="inputAddress2">Author/s</label>
-                      <input type="text" name="authors" class="form-control" id="inputAddress2" placeholder="Edmar Jay Heolin, Jay Smith, Edmar Smith" required>
-                    </div>
-              
-                    <div class="form-group">
-                        <label class="form-label" for="pdf-file">Choose PDF file</b></label>
-                        <input type="file" name="files" class="form-control" id="pdfUpload" accept=".pdf" onchange="validateFile(event)" required/>
-                    </div> 
-                    
-                    <div class="form-group">
-                      <label class="form-label" for="program">Programs:</b></label>
-                      <select class="form-select" name="program">
-                        <option selected value="BSIT">BSIT</option>
-                        <option value="BSED">BSED</option>
-                        <option value="BEED">BEED</option>
-                        <option value="BSSW">BSSW</option>
-                        <option value="BAPos">BAPos</option>
-                        <option value="BAELS">BAELS</option>
-                        <option value="BSM">BSM</option>
-                        <option value="BSA">BSA</option>
-                        <option value="BSF">BSF</option>
-                        <option value="BSES">BSES</option>
-                        <option value="BSCE">BSCE</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="year">Year</label>
-                      <input type="text" name="year" class="form-control" id="year">
-                    </div>
-                   
-                      <div class="form-group">
-                        <label for="inputAbstractES">Abstract/Executive Summary Page No.</label>
-                        <input type="number" name="abstractESNum" class="form-control" id="inputAbstractES">
-                      </div>
-                    
-                <button type="submit" class="btn btn-info">Submit</button>
-                <button class="btn btn-danger" data-dismiss="modal">Close</button>
-              </form>
+  <div class="col-md-6 mt-2">
+    <div class="card h-100">
+      <div class="card-header pb-0 px-3">
+        <div class="row">
+          <div class="mb-4">
+            <h6>Add Materials</h6>
           </div>
+          <form method="POST" action="{% url 'manuscripts' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="inputAddress">Material Title</label>
+              <input type="text" name="title" class="form-control" id="inputAddress" placeholder="Title of the File"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="inputAddress2">Author/s</label>
+              <input type="text" name="authors" class="form-control" id="inputAddress2"
+                placeholder="Edmar Jay Heolin, Jay Smith, Edmar Smith" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="pdf-file">Choose PDF file </b><span id="result" class="text-warning"> Must
+                  be a4 size</span></label>
+              <input type="file" name="files" class="form-control" id="pdfUpload" accept=".pdf"
+                onchange="validateFile(event)" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="program">Programs:</b></label>
+              <select class="form-select" name="program">
+                <option selected value="BSIT">BSIT</option>
+                <option value="BSED">BSED</option>
+                <option value="BEED">BEED</option>
+                <option value="BSSW">BSSW</option>
+                <option value="BAPos">BAPos</option>
+                <option value="BAELS">BAELS</option>
+                <option value="BSM">BSM</option>
+                <option value="BSA">BSA</option>
+                <option value="BSF">BSF</option>
+                <option value="BSES">BSES</option>
+                <option value="BSCE">BSCE</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="year">Year</label>
+              <input type="text" name="year" class="form-control" id="year">
+            </div>
+
+            <div class="form-group">
+              <label for="inputAbstractES">Abstract/Executive Summary Page No.</label>
+              <input type="number" name="abstractESNum" class="form-control" id="inputAbstractES">
+            </div>
+
+            <button type="submit" class="btn btn-info">Submit</button>
+            <button class="btn btn-danger" data-dismiss="modal">Close</button>
+          </form>
         </div>
       </div>
     </div>
-    
-    <div class="col-md-6 mt-4" >
-        <div class="card">
+  </div>
 
-              <div class="card-header pb-0 px-3">
-                  <div class="dropdown">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Pages
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                          <div id="document-list"></div>
-                      </div>
-                  </div>
-              </div>
-  
-          <div class="card-body p-3" style="max-height: 540px; overflow-y:scroll; overflow-x:scroll;">
-              
-              <div id="pdf-preview">
-                <center>
-                    <img src="{% static 'img/pdf.jpg' %}" width="390" draggable="false" alt="">
-                    <h2>Insert PDF File</h2>
-                </center>
-              </div>
+  <div class="col-md-6 mt-4">
+    <div class="card">
+
+      <div class="card-header pb-0 px-3">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Pages
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <div id="document-list"></div>
           </div>
         </div>
       </div>
+
+      <div class="card-body p-3" style="max-height: 540px; overflow-y:scroll; overflow-x:scroll;">
+
+        <div id="pdf-preview">
+          <center>
+            <img src="{% static 'img/pdf.jpg' %}" width="390" draggable="false" alt="">
+            <h2>Insert PDF File</h2>
+          </center>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
 
- <!-- Bootstrap Modal -->
- <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-warning">
         <h5 class="modal-title" id="errorModalLabel">Error</h5>
       </div>
       <div class="modal-body bg-warning">
-       <center><img src="{% static 'img/file_error.png' %}" width="250" alt="">
-        <h3 class="mt-4" id="errorMessage"></h3>
-      </center> 
+        <center><img src="{% static 'img/file_error.png' %}" width="250" alt="">
+          <h3 class="mt-4" id="errorMessage"></h3>
+        </center>
       </div>
-      
     </div>
   </div>
 </div>
@@ -117,13 +120,53 @@
     if (file) {
       var fileType = file.type.toLowerCase();
       if (fileType !== 'application/pdf') {
-        
+
         fileInput.value = ''; // Reset the file input
         // Close any open modal
         displayErrorMessage('Only PDF files are allowed.'); // Display error message
         setTimeout(closeModal, 5000);
       }
     }
+
+
+    const fileSize = event.target.files[0];
+
+    // Load the PDF file using pdf.js
+    const reader = new FileReader();
+    reader.onload = function () {
+      const typedArray = new Uint8Array(this.result);
+      pdfjsLib.getDocument(typedArray).promise.then(function (pdf) {
+        // Fetch the first page of the PDF
+        pdf.getPage(1).then(function (page) {
+          const viewport = page.getViewport({ scale: 1 });
+          const pageWidth = viewport.width; // PDF page width in points
+          const pageHeight = viewport.height; // PDF page height in points
+
+          // Compare the page dimensions to determine the slide size
+          if (pageWidth <= 596 && pageHeight <= 843) {
+            const mySpan = document.getElementById('result');
+            mySpan.classList.add('text-success');
+            mySpan.classList.remove('text-warning', 'text-danger');
+            document.getElementById("result").innerHTML = "A4 size Detected! Acceptable File";
+
+          } else if (pageWidth <= 612 && pageHeight <= 792) {
+            const mySpan = document.getElementById('result');
+            mySpan.classList.add('text-success');
+            mySpan.classList.remove('text-warning', 'text-danger');
+            document.getElementById("result").innerHTML = "Short size Detected! Acceptable File";
+
+          } else {
+            const mySpan = document.getElementById('result');
+            mySpan.classList.add('text-danger');
+            mySpan.classList.remove('text-warning', 'text-success');
+            document.getElementById("result").innerHTML = "Not Acceptable File, must be A4 or short size";
+            //alert("Size is not acceptable: Width:" + pageWidth + " Height: " + pageHeight);
+            fileInput.value = '';
+          }
+        });
+      });
+    };
+    reader.readAsArrayBuffer(fileSize);
   }
 
   function displayErrorMessage(message) {
@@ -136,5 +179,8 @@
     $('#errorModal').modal('hide');
   }
 
-  
+  function handleFileSelect(event) {
+
+  }
+
 </script>

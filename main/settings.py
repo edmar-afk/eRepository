@@ -81,9 +81,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'e_repositorydb',
         'HOST': '127.0.0.1',
-        'PORT': '3307',
+        'PORT': '3306',
         'USER': 'root',
-        'PASSWORD': '123456',
+        'PASSWORD': '1234567',
     }
 }
 
@@ -140,5 +140,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jaywrsnp6@gmail.com'
-EMAIL_HOST_PASSWORD = 'syrhyqzeemkttvzz'
+EMAIL_HOST_USER = 'jhmainlib.erepository@gmail.com'
+EMAIL_HOST_PASSWORD = 'hlqzmmjohqrukrlv'

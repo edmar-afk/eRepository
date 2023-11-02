@@ -216,7 +216,6 @@
                             {% csrf_token %}
                           <input style="opacity: 0; display:none;" type="text" name="email" value="{{visitors.email}}" placeholder="{{visitors.email}}">
                           <input style="opacity: 0; display:none;" type="text" name="id" value="{{visitors.id}}" placeholder="{{visitors.id}}">
-                          
                           <a href="{% url 'deleterequest' visitors.id %}" class="btn btn-danger text-white p-2 text-xs">
                             <i class="fas fa-trash" aria-hidden="true"></i>
                           </a>

@@ -215,9 +215,62 @@
                         <td class="align-middle">
                           <a href="{% url 'deleteusers' users.id %}" class="btn btn-danger p-2 text-xs" data-toggle="tooltip" data-original-title="delete user">
                             Delete
+                          </a> 
+                          <a href="#" data-toggle="modal" data-target="#modal{{users.id}}" class="btn btn-info p-2 text-xs" data-toggle="tooltip"
+                            data-original-title="delete user">
+                            Edit
                           </a>
                         </td>
                       </tr>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="modal{{users.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Edit <span class="text-warning">{{users.first_name}}</span> Info </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="{% url 'updatestaff' users.id %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                  <label for="inputAddress">Full Name</label>
+                                  <input type="text" name="full_name" class="form-control" id="inputAddress" value="{{users.first_name}}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                  <label for="inputAddress2">Username</label>
+                                  <input type="text" name="username" class="form-control" id="inputAddress2" value="{{users.username}}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                  <label for="email">Email</label>
+                                  <input type="email" name="email" class="form-control" value="{{users.email}}" id="email">
+                                </div>
+                                
+                                <div class="form-group">
+                                  <label for="mobilenum">Mobile No.</label>
+                                  <input type="number" name="mobile" class="form-control" id="mobilenum" value="{{users.last_name}}">
+                                </div>
+                                
+                                <div class="form-group">
+                                  <label for="pass">New Password: <span class="text-warning">Leave blank if you not wish to change the password</span></label>
+                                  <input type="password" name="new_password" class="form-control" id="password">
+                                  <input type="checkbox" id="showPassword"> Show Password
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-info">Save changes</button>
+                              <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
                     {% endfor %}
                   </tbody>
          
@@ -279,7 +332,23 @@
 </div>
 
 
+<script>
+  // Function to toggle password visibility
+  function togglePasswordVisibility() {
+    const passwordInput = document.getElementById("password");
+    const showPasswordCheckbox = document.getElementById("showPassword");
 
+    if (showPasswordCheckbox.checked) {
+      passwordInput.type = "text"; // Change input type to text to show the password
+    } else {
+      passwordInput.type = "password"; // Change input type back to password
+    }
+  }
+
+  // Add event listener to the checkbox to toggle password visibility
+  const showPasswordCheckbox = document.getElementById("showPassword");
+  showPasswordCheckbox.addEventListener("change", togglePasswordVisibility);
+</script>
 
 <script>
   function searchTable() {

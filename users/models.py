@@ -16,7 +16,7 @@ class Librarian(models.Model):
 class Manuscripts(models.Model):
     title = models.CharField(max_length=250)
     authors = models.CharField(max_length=1000)
-    filename = models.FileField(upload_to='media/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'ppt', 'word', 'excel'])],)
+    filename = models.FileField(upload_to='media/', validators=[FileExtensionValidator(allowed_extensions=['pdf'])],)
     downloads = models.IntegerField(default=0)
     year = models.CharField(max_length=250)
     program = models.CharField(max_length=20)
@@ -34,7 +34,7 @@ class Visitors(models.Model):
     filename = models.ForeignKey(Manuscripts, on_delete=models.CASCADE)
     requests_email_token = models.CharField(max_length=250)
     requested_date = models.DateTimeField(auto_now_add=True)
-    
+    status = models.CharField(max_length=100, default="Not Granted")
 
 class VisitorCount(models.Model):
     count = models.PositiveIntegerField(default=0)
