@@ -23,7 +23,8 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/visitor_index')),
-    path('', include('users.urls'))
+    path('', RedirectView.as_view(url='/auth')),
+    path('', include('users.urls')),
+    path("__reload__/", include("django_browser_reload.urls")),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

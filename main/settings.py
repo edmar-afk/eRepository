@@ -39,6 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'tailwind',
+    'theme',
+    'django_browser_reload',
+]
+
+TAILWIND_APP_NAME = 'theme'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
 ]
 
 MIDDLEWARE = [
@@ -49,9 +58,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-]
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 
+]
+X_FRAME_OPTIONS = 'SAMEORIGIN'  # or 'DENY' for stricter security
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
@@ -87,6 +98,10 @@ DATABASES = {
     }
 }
 
+# custom users here
+
+
+######
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -119,7 +134,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+LOGIN_URL = '/login/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -142,3 +157,6 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'jhmainlib.erepository@gmail.com'
 EMAIL_HOST_PASSWORD = 'hlqzmmjohqrukrlv'
+
+
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
