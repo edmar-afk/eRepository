@@ -6,7 +6,7 @@
       <div class="card-header pb-0 px-3">
         <div class="row">
           <div class="mb-4">
-            <h6>Add Materials</h6>
+            <h6>Add Manuscript</h6>
           </div>
           <form method="POST" action="{% url 'manuscripts' %}" enctype="multipart/form-data">
             {% csrf_token %}
@@ -20,7 +20,7 @@
             <div class="form-group">
               <label for="inputAddress2">Author/s</label>
               <input type="text" name="authors" class="form-control" id="inputAddress2"
-                placeholder="Edmar Jay Heolin, Jay Smith, Edmar Smith" required>
+                placeholder="Juan A. Dela Cruz, Jose P. Santos" required>
             </div>
 
             <div class="form-group">
@@ -28,6 +28,22 @@
                   be a4 size</span></label>
               <input type="file" name="files" class="form-control" id="pdfUpload" accept=".pdf"
                 onchange="validateFile(event)" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="identifier">Identifier:</b></label>
+              <select class="form-select" name="identifier">
+                <option selected value="Main">Main</option>
+                <option value="Dumingag">Dumingag</option>
+                <option value="Canuto">Canuto</option>
+                <option value="Pagadian">Pagadian</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="accession">Accession Number:</label>
+              <input type="text" name="accessionnum" class="form-control" id="accession"
+                placeholder="Enter Accession Number" required>
             </div>
 
             <div class="form-group">

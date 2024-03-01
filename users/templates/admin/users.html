@@ -31,6 +31,18 @@
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
 
   <style>
+    /* Hide the up and down arrows in number input */
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+
     .document-item {
       cursor: pointer;
       padding: 5px;
@@ -41,6 +53,7 @@
       align-items: center;
       flex-flow: row wrap;
     }
+
 
     .document-item.active {
       background-color: #098f99;
@@ -234,7 +247,7 @@
                   <tbody>
 
                     {% for users in user %}
-                      {% if users.email %}
+                    {% if users.email %}
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
@@ -298,8 +311,8 @@
                               </div>
 
                               <div class="form-group">
-                                <label for="mobilenum">Mobile No.</label>
-                                <input type="number" name="mobile" class="form-control" id="mobilenum"
+                                <label for="mobilenum">Mobile No.</label><span id="error-message2" class="text-danger" style="font-size:12px; font-weight:bold;"></span>
+                                <input type="number" name="mobile" class="form-control" maxlength="11" id="mobilenum2"
                                   value="{{users.last_name}}">
                               </div>
 
@@ -311,14 +324,14 @@
                               </div>
                           </div>
                           <div class="modal-footer">
-                            <button type="submit" class="btn btn-info">Save changes</button>
+                            <button type="submit" class="btn btn-info" id="submitBtn2">Save changes</button>
                             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                           </div>
                           </form>
                         </div>
-                      </div> 
+                      </div>
                     </div>
-                      {% endif %}
+                    {% endif %}
                     {% endfor %}
                   </tbody>
 
@@ -343,23 +356,23 @@
           {% csrf_token %}
           <div class="form-group">
             <label for="inputAddress">Full Name</label>
-            <input type="text" name="full_name" class="form-control" id="inputAddress" placeholder="Cardo Dalisay"
+            <input type="text" name="full_name" class="form-control" id="inputAddress" placeholder="Juan C. Dela Cruz"
               required>
           </div>
 
           <div class="form-group">
             <label for="inputAddress2">Username</label>
-            <input type="text" name="username" class="form-control" id="inputAddress2" placeholder="cardo123" required>
+            <input type="text" name="username" class="form-control" id="inputAddress2" placeholder="juan123" required>
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" placeholder="cardoDalisay@gmail.com" id="email">
+            <input type="email" name="email" class="form-control" placeholder="juandelacruz@gmail.com" id="email">
           </div>
 
           <div class="form-group">
-            <label for="mobilenum">Mobile No.</label>
-            <input type="number" name="mobile" class="form-control" id="mobilenum" max="11">
+            <label for="mobilenum">Mobile No.</label><span id="error-message" class="text-danger" style="font-size:12px; font-weight:bold;"></span>
+            <input type="number" name="mobile" class="form-control" id="mobilenum1" maxlength="11">
           </div>
 
           <div class="form-group">
@@ -372,7 +385,7 @@
             <input type="password" name="password2" class="form-control" id="password2">
           </div>
 
-          <button type="submit" class="btn btn-info">Submit</button>
+          <button type="submit" class="btn btn-info" id="submitBtn" disabled>Submit</button>
           <button class="btn btn-danger" data-dismiss="modal">Close</button>
         </form>
 
@@ -380,6 +393,63 @@
     </div>
   </div>
   </div>
+
+  <script>
+  var numberInput = document.getElementById('mobilenum1');
+  var errorMessage = document.getElementById('error-message');
+  var submitBtn = document.getElementById('submitBtn');
+
+  numberInput.addEventListener('wheel', function (e) {
+    e.preventDefault();
+  });
+
+  numberInput.addEventListener('input', function () {
+    var inputValue = numberInput.value;
+
+    // Validate input length
+    if (inputValue.length > 11) {
+      numberInput.value = inputValue.slice(0, 11);
+    }
+
+    // Check if the input starts with "09"
+    if (!inputValue.startsWith('09')) {
+      errorMessage.textContent = 'Mobile number must start with "09"';
+      submitBtn.disabled = true; // Disable the submit button
+    } else {
+      errorMessage.textContent = ''; // Clear error message if valid
+      submitBtn.disabled = false; // Enable the submit button
+    }
+  });
+</script>
+
+
+
+<script>
+  var numberInput2 = document.getElementById('mobilenum2');
+  var errorMessage2 = document.getElementById('error-message2');
+  var submitBtn2 = document.getElementById('submitBtn2');
+
+  numberInput2.addEventListener('wheel', function (e) {
+    e.preventDefault();
+  });
+
+  numberInput2.addEventListener('input', function () {
+    var inputValue = numberInput2.value;
+
+    // Validate input length
+    if (inputValue.length > 11) {
+      numberInput2.value = inputValue.slice(0, 11);
+    }
+
+    // Check if the input starts with "09"
+    if (!inputValue.startsWith('09')) {
+      errorMessage2.textContent = 'Mobile number must start with "09"';
+    } else {
+      errorMessage2.textContent = ''; // Clear error message if valid
+    }
+  });
+</script>
+
 
 
   <script>

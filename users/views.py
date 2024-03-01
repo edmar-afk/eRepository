@@ -39,8 +39,6 @@ def graph_yesterday(request):
     yesterday_all_visits = PageVisit.objects.filter(
         visited_at=yesterday.date()).count()
 
-
-
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday_students_visits = PageVisit.objects.filter(
         visited_at=yesterday.date(),
@@ -48,9 +46,7 @@ def graph_yesterday(request):
         user__last_name='Current Student'
     )
     yesterday_student_count = yesterday_students_visits.count()
-    
-    
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday_staff_visits = PageVisit.objects.filter(
         visited_at=yesterday.date(),
@@ -58,9 +54,7 @@ def graph_yesterday(request):
         user__last_name='Staff'
     )
     yesterday_staff_count = yesterday_staff_visits.count()
-    
-    
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday_alumni_visits = PageVisit.objects.filter(
         visited_at=yesterday.date(),
@@ -68,9 +62,7 @@ def graph_yesterday(request):
         user__last_name='Alumni'
     )
     yesterday_alumni_count = yesterday_alumni_visits.count()
-    
-    
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday_faculty_visits = PageVisit.objects.filter(
         visited_at=yesterday.date(),
@@ -78,9 +70,9 @@ def graph_yesterday(request):
         user__last_name='Faculty'
     )
     yesterday_faculty_count = yesterday_faculty_visits.count()
-    
+
     visitors = User.objects.filter(Q(email='') & ~Q(is_superuser=True))
-    
+
     context = {
         'visitors': visitors,
         'yesterday_student_count': yesterday_student_count,
@@ -89,22 +81,16 @@ def graph_yesterday(request):
         'yesterday_staff_count': yesterday_faculty_count,
         'yesterday_datetime': yesterday_datetime,
         'yesterday_all_visits': yesterday_all_visits,
-        
+
     }
     return render(request, "admin/graphs-yesterday.html", context)
-
-
-
-
-
-
 
 
 def graph(request):
     current_datetime = timezone.now()
     daily_all_visits = PageVisit.objects.filter(
         visited_at=current_datetime.date()).count()
- 
+
     # Filter PageVisit objects for visits on the current day and month
     current_students_visits = PageVisit.objects.filter(
         visited_at=current_datetime.date(),
@@ -414,11 +400,13 @@ def manuscripts(request):
         title = request.POST['title']
         authors = request.POST['authors']
         filename = request.FILES['files']
+        accessionnum = request.POST['accessionnum']
+        identifier = request.POST['identifier']
         program = request.POST['program']
         year = request.POST['year']
         abes_num = request.POST['abstractESNum']
 
-        new_books = Manuscripts(title=title, authors=authors, filename=filename,
+        new_books = Manuscripts(title=title, authors=authors, filename=filename, identifier=identifier, accessionnum=accessionnum,
                                 program=program, year=year, abstractES_num=abes_num)
         new_books.save()
         messages.success(request, 'Manuscript added')
@@ -426,6 +414,51 @@ def manuscripts(request):
         'manuscripts': manuscripts
     }
     return render(request, 'admin/manuscript.html', context)
+
+
+def view_manuscript(request, book_id):
+    manuscript = get_object_or_404(Manuscripts, id=book_id)
+
+    context = {
+        'manuscript': manuscript
+    }
+    return render(request, 'admin/includes/view-manuscript.html', context)
+
+
+def edit_books(request, book_id):
+    manuscript_title = request.POST.get('title')
+    manuscript_authors = request.POST.get('authors')
+    manuscript_program = request.POST.get('program')
+    accessionnum = request.POST.get('accessionnum')
+    identifier = request.POST.get('identifier')
+    manuscript_year = request.POST.get('year')
+    manuscript_abstractES_num = request.POST.get('abstractESNum')
+    manuscript_update = Manuscripts.objects.get(id=book_id)
+
+    # Check if a new file was uploaded
+    new_manuscript_file = request.FILES.get('files')
+
+    if new_manuscript_file:
+        # Remove the old file if it exists
+        if manuscript_update.filename:
+            default_storage.delete(manuscript_update.filename.path)
+
+        # Save the new file
+        manuscript_update.filename.save(
+            new_manuscript_file.name, new_manuscript_file)
+        manuscript_update.downloads = 0  # Reset downloads to zero here
+
+    manuscript_update.title = manuscript_title
+    manuscript_update.authors = manuscript_authors
+    manuscript_update.program = manuscript_program
+    manuscript_update.accessionnum = accessionnum
+    manuscript_update.identifier = identifier
+    manuscript_update.year = manuscript_year
+    manuscript_update.abstractES_num = manuscript_abstractES_num
+    manuscript_update.save()
+
+    messages.success(request, 'Manuscript Changed')
+    return redirect('/manuscripts')
 
 
 @login_required(login_url='login')
@@ -561,7 +594,7 @@ def visitor_index(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     if request.user.is_authenticated:
         # Create a page visit record for the logged-in user
         PageVisit.objects.create(user=request.user, visited_at=date_now)
@@ -571,7 +604,8 @@ def visitor_index(request):
         page_visits = PageVisit.objects.filter(user=request.user).count()
     context = {
         'page_visits': page_visits,
-        'manuscripts': manuscripts
+        'manuscripts': manuscripts,
+
     }
     return render(request, 'visitors/index.html', context)
 
@@ -603,7 +637,8 @@ def updatestaff(request, staff_id):
     # Send an email notification to the staff
     if new_password:
         subject = 'Password Changed'
-        message = f'Your password has been changed successfully by the Librarian. Your new password is: {new_password}'
+        message = f'Your password has been changed successfully by the Librarian. Your new password is: {
+            new_password}'
         from_email = 'jhmainlib.erepository@gmail.com'  # Set the sender's email address
         recipient_list = [user_email]
 
@@ -637,38 +672,6 @@ def delete_books(request, books_id):
     except Manuscripts.DoesNotExist:
         messages.error(request, 'Manuscript not found')
 
-    return redirect('/manuscripts')
-
-
-def edit_books(request, book_id):
-    manuscript_title = request.POST.get('title')
-    manuscript_authors = request.POST.get('authors')
-    manuscript_program = request.POST.get('program')
-    manuscript_year = request.POST.get('year')
-    manuscript_abstractES_num = request.POST.get('abstractESNum')
-    manuscript_update = Manuscripts.objects.get(id=book_id)
-
-    # Check if a new file was uploaded
-    new_manuscript_file = request.FILES.get('files')
-
-    if new_manuscript_file:
-        # Remove the old file if it exists
-        if manuscript_update.filename:
-            default_storage.delete(manuscript_update.filename.path)
-
-        # Save the new file
-        manuscript_update.filename.save(
-            new_manuscript_file.name, new_manuscript_file)
-        manuscript_update.downloads = 0  # Reset downloads to zero here
-
-    manuscript_update.title = manuscript_title
-    manuscript_update.authors = manuscript_authors
-    manuscript_update.program = manuscript_program
-    manuscript_update.year = manuscript_year
-    manuscript_update.abstractES_num = manuscript_abstractES_num
-    manuscript_update.save()
-
-    messages.success(request, 'Manuscript Changed')
     return redirect('/manuscripts')
 
 
@@ -715,7 +718,7 @@ def bsit(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -737,7 +740,7 @@ def bsed(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -759,7 +762,7 @@ def beed(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -781,7 +784,7 @@ def bssw(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -803,7 +806,7 @@ def bapos(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -825,7 +828,7 @@ def baels(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -847,7 +850,7 @@ def bsm(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -869,7 +872,7 @@ def bsa(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -891,7 +894,7 @@ def bsf(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -913,7 +916,7 @@ def bses(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -935,7 +938,7 @@ def bsce(request):
         new_requests = Visitors(email=email, file_link=fileLink,
                                 filename_id=fileName, requests_email_token=token)
         new_requests.save()
-
+        messages.success(request, 'Email Sent')
     # Retrieve the visitor count object, or create a new one if it doesn't exist yet
 
     context = {
@@ -944,21 +947,10 @@ def bsce(request):
     return render(request, 'visitors/courses.html', context)
 
 
-
-
-
-
-
-
-
-
-
-
-
 def graph_sevendays(request):
     # Calculate the date for yesterday
     yesterday_datetime = timezone.now()
-    
+
     yesterday = yesterday_datetime - timedelta(days=1)
     yesterday_2days = yesterday_datetime - timedelta(days=2)
     yesterday_3days = yesterday_datetime - timedelta(days=3)
@@ -978,7 +970,7 @@ def graph_sevendays(request):
         user__last_name='Current Student'
     )
     yesterday7_student_count = yesterday7_students_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday7_staff_visits = PageVisit.objects.filter(
         visited_at=yesterday_7days.date(),
@@ -986,7 +978,7 @@ def graph_sevendays(request):
         user__last_name='Staff'
     )
     yesterday7_staff_count = yesterday7_staff_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday7_alumni_visits = PageVisit.objects.filter(
         visited_at=yesterday_7days.date(),
@@ -994,7 +986,7 @@ def graph_sevendays(request):
         user__last_name='Alumni'
     )
     yesterday7_alumni_count = yesterday7_alumni_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday7_faculty_visits = PageVisit.objects.filter(
         visited_at=yesterday_7days.date(),
@@ -1003,7 +995,6 @@ def graph_sevendays(request):
     )
     yesterday7_faculty_count = yesterday7_faculty_visits.count()
 
-    
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday6_students_visits = PageVisit.objects.filter(
         visited_at=yesterday_6days.date(),
@@ -1011,7 +1002,7 @@ def graph_sevendays(request):
         user__last_name='Current Student'
     )
     yesterday6_student_count = yesterday6_students_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday6_staff_visits = PageVisit.objects.filter(
         visited_at=yesterday_6days.date(),
@@ -1019,7 +1010,7 @@ def graph_sevendays(request):
         user__last_name='Staff'
     )
     yesterday6_staff_count = yesterday6_staff_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday6_alumni_visits = PageVisit.objects.filter(
         visited_at=yesterday_6days.date(),
@@ -1027,7 +1018,7 @@ def graph_sevendays(request):
         user__last_name='Alumni'
     )
     yesterday6_alumni_count = yesterday6_alumni_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday6_faculty_visits = PageVisit.objects.filter(
         visited_at=yesterday_6days.date(),
@@ -1035,17 +1026,15 @@ def graph_sevendays(request):
         user__last_name='Faculty'
     )
     yesterday6_faculty_count = yesterday6_faculty_visits.count()
-    
-    
 
-     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
+    # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday5_students_visits = PageVisit.objects.filter(
         visited_at=yesterday_5days.date(),
         # Make sure 'yesterday Student' is enclosed in single quotes
         user__last_name='Current Student'
     )
     yesterday5_student_count = yesterday5_students_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday5_staff_visits = PageVisit.objects.filter(
         visited_at=yesterday_5days.date(),
@@ -1053,7 +1042,7 @@ def graph_sevendays(request):
         user__last_name='Staff'
     )
     yesterday5_staff_count = yesterday5_staff_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday5_alumni_visits = PageVisit.objects.filter(
         visited_at=yesterday_5days.date(),
@@ -1061,7 +1050,7 @@ def graph_sevendays(request):
         user__last_name='Alumni'
     )
     yesterday5_alumni_count = yesterday5_alumni_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday5_faculty_visits = PageVisit.objects.filter(
         visited_at=yesterday_5days.date(),
@@ -1070,17 +1059,14 @@ def graph_sevendays(request):
     )
     yesterday5_faculty_count = yesterday5_faculty_visits.count()
 
-    
-    
-
-     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
+    # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday4_students_visits = PageVisit.objects.filter(
         visited_at=yesterday_4days.date(),
         # Make sure 'yesterday Student' is enclosed in single quotes
         user__last_name='Current Student'
     )
     yesterday4_student_count = yesterday4_students_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday4_staff_visits = PageVisit.objects.filter(
         visited_at=yesterday_4days.date(),
@@ -1088,7 +1074,7 @@ def graph_sevendays(request):
         user__last_name='Staff'
     )
     yesterday4_staff_count = yesterday4_staff_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday4_alumni_visits = PageVisit.objects.filter(
         visited_at=yesterday_4days.date(),
@@ -1096,7 +1082,7 @@ def graph_sevendays(request):
         user__last_name='Alumni'
     )
     yesterday4_alumni_count = yesterday4_alumni_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday4_faculty_visits = PageVisit.objects.filter(
         visited_at=yesterday_4days.date(),
@@ -1104,8 +1090,6 @@ def graph_sevendays(request):
         user__last_name='Faculty'
     )
     yesterday4_faculty_count = yesterday4_faculty_visits.count()
-    
-    
 
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday3_students_visits = PageVisit.objects.filter(
@@ -1114,7 +1098,7 @@ def graph_sevendays(request):
         user__last_name='Current Student'
     )
     yesterday3_student_count = yesterday3_students_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday3_staff_visits = PageVisit.objects.filter(
         visited_at=yesterday_3days.date(),
@@ -1122,7 +1106,7 @@ def graph_sevendays(request):
         user__last_name='Staff'
     )
     yesterday3_staff_count = yesterday3_staff_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday3_alumni_visits = PageVisit.objects.filter(
         visited_at=yesterday_3days.date(),
@@ -1130,7 +1114,7 @@ def graph_sevendays(request):
         user__last_name='Alumni'
     )
     yesterday3_alumni_count = yesterday3_alumni_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday3_faculty_visits = PageVisit.objects.filter(
         visited_at=yesterday_3days.date(),
@@ -1139,10 +1123,6 @@ def graph_sevendays(request):
     )
     yesterday3_faculty_count = yesterday3_faculty_visits.count()
 
-
-
-
-
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday2_students_visits = PageVisit.objects.filter(
         visited_at=yesterday_2days.date(),
@@ -1150,7 +1130,7 @@ def graph_sevendays(request):
         user__last_name='Current Student'
     )
     yesterday2_student_count = yesterday2_students_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday2_staff_visits = PageVisit.objects.filter(
         visited_at=yesterday_2days.date(),
@@ -1158,7 +1138,7 @@ def graph_sevendays(request):
         user__last_name='Staff'
     )
     yesterday2_staff_count = yesterday2_staff_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday2_alumni_visits = PageVisit.objects.filter(
         visited_at=yesterday_2days.date(),
@@ -1166,7 +1146,7 @@ def graph_sevendays(request):
         user__last_name='Alumni'
     )
     yesterday2_alumni_count = yesterday2_alumni_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday2_faculty_visits = PageVisit.objects.filter(
         visited_at=yesterday_2days.date(),
@@ -1175,8 +1155,6 @@ def graph_sevendays(request):
     )
     yesterday2_faculty_count = yesterday2_faculty_visits.count()
 
-
-
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday_students_visits = PageVisit.objects.filter(
         visited_at=yesterday.date(),
@@ -1184,7 +1162,7 @@ def graph_sevendays(request):
         user__last_name='Current Student'
     )
     yesterday_student_count = yesterday_students_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday_staff_visits = PageVisit.objects.filter(
         visited_at=yesterday.date(),
@@ -1192,7 +1170,7 @@ def graph_sevendays(request):
         user__last_name='Staff'
     )
     yesterday_staff_count = yesterday_staff_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday_alumni_visits = PageVisit.objects.filter(
         visited_at=yesterday.date(),
@@ -1200,7 +1178,7 @@ def graph_sevendays(request):
         user__last_name='Alumni'
     )
     yesterday_alumni_count = yesterday_alumni_visits.count()
-    
+
     # Filter PageVisit objects for visits on the previous day and with last_name 'Current Student'
     yesterday_faculty_visits = PageVisit.objects.filter(
         visited_at=yesterday.date(),
@@ -1208,48 +1186,48 @@ def graph_sevendays(request):
         user__last_name='Faculty'
     )
     yesterday_faculty_count = yesterday_faculty_visits.count()
-    
+
     visitors = User.objects.filter(Q(email='') & ~Q(is_superuser=True))
-    
+
     context = {
         'visitors': visitors,
-        'yesterday7_student_count':yesterday7_student_count,
-        'yesterday7_staff_count':yesterday7_staff_count,
-        'yesterday7_alumni_count':yesterday7_alumni_count,
-        'yesterday7_faculty_count':yesterday7_faculty_count,
-        
-        'yesterday6_student_count':yesterday6_student_count,
-        'yesterday6_staff_count':yesterday6_staff_count,
-        'yesterday6_alumni_count':yesterday6_alumni_count,
-        'yesterday6_faculty_count':yesterday6_faculty_count,
-        
-        'yesterday5_student_count':yesterday5_student_count,
-        'yesterday5_staff_count':yesterday5_staff_count,
-        'yesterday5_alumni_count':yesterday5_alumni_count,
-        'yesterday5_faculty_count':yesterday5_faculty_count,
-        
-        'yesterday4_student_count':yesterday4_student_count,
-        'yesterday4_staff_count':yesterday4_staff_count,
-        'yesterday4_alumni_count':yesterday4_alumni_count,
-        'yesterday4_faculty_count':yesterday4_faculty_count,
-        
-        'yesterday3_student_count':yesterday3_student_count,
-        'yesterday3_staff_count':yesterday3_staff_count,
-        'yesterday3_alumni_count':yesterday3_alumni_count,
-        'yesterday3_faculty_count':yesterday3_faculty_count,
-        
-        'yesterday2_student_count':yesterday2_student_count,
-        'yesterday2_staff_count':yesterday2_staff_count,
-        'yesterday2_alumni_count':yesterday2_alumni_count,
-        'yesterday2_faculty_count':yesterday2_faculty_count,
-        
+        'yesterday7_student_count': yesterday7_student_count,
+        'yesterday7_staff_count': yesterday7_staff_count,
+        'yesterday7_alumni_count': yesterday7_alumni_count,
+        'yesterday7_faculty_count': yesterday7_faculty_count,
+
+        'yesterday6_student_count': yesterday6_student_count,
+        'yesterday6_staff_count': yesterday6_staff_count,
+        'yesterday6_alumni_count': yesterday6_alumni_count,
+        'yesterday6_faculty_count': yesterday6_faculty_count,
+
+        'yesterday5_student_count': yesterday5_student_count,
+        'yesterday5_staff_count': yesterday5_staff_count,
+        'yesterday5_alumni_count': yesterday5_alumni_count,
+        'yesterday5_faculty_count': yesterday5_faculty_count,
+
+        'yesterday4_student_count': yesterday4_student_count,
+        'yesterday4_staff_count': yesterday4_staff_count,
+        'yesterday4_alumni_count': yesterday4_alumni_count,
+        'yesterday4_faculty_count': yesterday4_faculty_count,
+
+        'yesterday3_student_count': yesterday3_student_count,
+        'yesterday3_staff_count': yesterday3_staff_count,
+        'yesterday3_alumni_count': yesterday3_alumni_count,
+        'yesterday3_faculty_count': yesterday3_faculty_count,
+
+        'yesterday2_student_count': yesterday2_student_count,
+        'yesterday2_staff_count': yesterday2_staff_count,
+        'yesterday2_alumni_count': yesterday2_alumni_count,
+        'yesterday2_faculty_count': yesterday2_faculty_count,
+
         'yesterday_student_count': yesterday_student_count,
         'yesterday_alumni_count': yesterday_alumni_count,
         'yesterday_faculty_count': yesterday_faculty_count,
         'yesterday_staff_count': yesterday_faculty_count,
-        
+
         'yesterday_all_visits': yesterday_all_visits,
-        
+
         'yesterday': yesterday,
         'yesterday_2days': yesterday_2days,
         'yesterday_3days': yesterday_3days,
@@ -1262,16 +1240,8 @@ def graph_sevendays(request):
     return render(request, "admin/graphs-7days.html", context)
 
 
-
-
-
-
-
-
-
-
 def graph_thirtydays(request):
-    
+
     # Assuming you have a User model and PageVisit model defined
 
     # Filter PageVisit objects for visits in November and associated users with last name 'Current Student'
@@ -1282,8 +1252,7 @@ def graph_thirtydays(request):
 
     # Count the number of such PageVisit objects
     studentNovember = novemberVisits_student.count()
-    
-    
+
     novemberVisits_faculty = PageVisit.objects.filter(
         visited_at__month=11,
         user__last_name='Faculty'
@@ -1291,8 +1260,7 @@ def graph_thirtydays(request):
 
     # Count the number of such PageVisit objects
     facultyNovember = novemberVisits_faculty.count()
-    
-    
+
     novemberVisits_staff = PageVisit.objects.filter(
         visited_at__month=11,
         user__last_name='Staff'
@@ -1300,8 +1268,7 @@ def graph_thirtydays(request):
 
     # Count the number of such PageVisit objects
     staffNovember = novemberVisits_staff.count()
-    
-    
+
     novemberVisits_alumni = PageVisit.objects.filter(
         visited_at__month=11,
         user__last_name='Alumni'
@@ -1309,8 +1276,7 @@ def graph_thirtydays(request):
 
     # Count the number of such PageVisit objects
     alumniNovember = novemberVisits_alumni.count()
-    
-    
+
     # Filter PageVisit objects for visits in November and associated users with last name 'Current Student'
     decemberVisits_student = PageVisit.objects.filter(
         visited_at__month=12,
@@ -1343,7 +1309,7 @@ def graph_thirtydays(request):
 
     # Count the number of such PageVisit objects
     alumnidecember = decemberVisits_alumni.count()
- 
+
     visitors = User.objects.filter(Q(email='') & ~Q(is_superuser=True))
     context = {
         'visitors': visitors,
@@ -1351,18 +1317,14 @@ def graph_thirtydays(request):
         'facultyNovember': facultyNovember,
         'staffNovember': staffNovember,
         'alumniNovember': alumniNovember,
-        
+
         'studentdecember': studentdecember,
         'facultydecember': facultydecember,
         'staffdecember': staffdecember,
         'alumnidecember': alumnidecember,
-        
+
     }
     return render(request, 'admin/graphs-30days.html', context)
-
-
-
-
 
 
 '''

@@ -20,6 +20,8 @@ class Manuscripts(models.Model):
     filename = models.FileField(upload_to='media/', validators=[FileExtensionValidator(allowed_extensions=['pdf'])],)
     downloads = models.IntegerField(default=0)
     year = models.CharField(max_length=250)
+    identifier = models.CharField(max_length=100)
+    accessionnum = models.CharField(max_length=250)
     program = models.CharField(max_length=20)
     upload_date = models.DateField(default=now)
     abstractES_num = models.IntegerField()

@@ -961,6 +961,10 @@ select {
   margin-right: 0.5rem;
 }
 
+.mr-3 {
+  margin-right: 0.75rem;
+}
+
 .ms-1 {
   margin-inline-start: 0.25rem;
 }
@@ -1349,6 +1353,11 @@ select {
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 .px-2 {

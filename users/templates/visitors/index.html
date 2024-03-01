@@ -13,7 +13,10 @@
   </title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.3.0/pdf.min.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <!-- Include Bootstrap CSS and JS (assuming you're using Bootstrap) -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Nucleo Icons -->
@@ -46,12 +49,13 @@
 
         <span class="mask opacity-8">
           <center>
-            <h1 class="display-1 text-white bg-dark mt-7 p-4">WELCOME RESEARCHER</h1>
+            <h1 class="display-1 text-white bg-dark mt-7 p-4">WELCOME | SEMBUEN</h1>
           </center>
-          <a href="{% url 'logout' %}" class="login-button btn btn-danger text-black text-capitalize opacity-10">Logout</a>
+          <a href="{% url 'logout' %}"
+            class="login-button btn btn-danger text-black text-capitalize opacity-10">Logout</a>
         </span>
 
-        
+
       </div>
       <div class="card card-body mt-n6" style="z-index: 200; background-color:#bff1c4;">
         <div class="row gx-4">
@@ -116,6 +120,31 @@
           </div>
         </div>
       </div>
+
+      {% for message in messages %}
+      {% if message.level_tag == 'success' %}
+
+      <div class="modal fade" id="some" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content p-3" style="overflow: hidden;">
+            <center><img src="{% static 'img/sent.gif' %}" width="350" alt="">
+            <p class="text-lg text-dark mb-4">{{message}}!</p> 
+            <a href="{% url 'visitor_index' %}" class="bg-info text-white" style="padding:6px 12px; border-radius:10px;">Thanks!</a>
+            </center>
+          </div>
+        </div>
+      </div>
+      <script>
+        // Use jQuery to show the modal when the page loads
+        $(document).ready(function () {
+          $('#some').modal('show');
+        });
+      </script>
+      {% else %}
+      <p class="alert bg-info text-white" role="alert">{{ message }}</p>
+      {% endif %}
+      {% endfor %}
 
       <div id="noMatchText" class="h3 text-center text-white p-4 md:p-0"
         style="display: none; margin-top:150px; margin-bottom:150px;">
@@ -294,8 +323,8 @@
       <footer class="footer pt-4 p-4" style="background-color: #bff1c4;">
         <div class="container-fluid">
           <div class="copyright text-center text-sm text-dark text-lg-start">
-            <center>Copyright © JHCSC Main | All Rights Reserved <img src="{% static 'img/fb.png' %}" class="ml-2"
-                width="25" alt=""> </center>
+            <center>Copyright © JHCSC Main | All Rights Reserved <a href="https://www.facebook.com/profile.php?id=100064622084746" target="_blank"><img src="{% static 'img/fb.png' %}" class="ml-2"
+                width="25" alt=""></a> </center>
           </div>
         </div>
       </footer>
@@ -315,8 +344,8 @@
             <div class="overlay-view"></div>
           </div>
 
-          <div style="position:absolute; bottom:20px; left:30px; z-index:300;">
-            <button class="btn btn-secondary mt-4" style="width: 100px; z-index:200; "
+          <div style="position:absolute; bottom:0; left:0; z-index:300; background-color:white; width:100%;">
+            <button class="btn btn-secondary mt-4" style="width: 100px; z-index:200; margin-left:20px; "
               data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -401,7 +430,7 @@
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
               <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="download"
-                placeholder="Enter email">
+                placeholder="Enter email" required>
               <small id="download" class="form-text text-muted">We'll never share your email with anyone else.</small>
               <input style="opacity: 0; display:none;" type="text" name="file_link" class="form-control"
                 value="{{manuscript_item.filename.url}}">

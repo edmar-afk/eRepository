@@ -1,4 +1,4 @@
-{% load static  %}
+{% load static %}
 
 
 <!DOCTYPE html>
@@ -46,22 +46,26 @@
 
         <span class="mask opacity-8">
           <center>
-            <h1 class="display-1 text-white bg-dark mt-7 p-4">WELCOME RESEARCHER</h1>
+            <h1 class="display-1 text-white bg-dark mt-7 p-4">WELCOME | SEMBUEN</h1>
           </center>
+          <a href="{% url 'logout' %}"
+            class="login-button btn btn-danger text-black text-capitalize opacity-10">Logout</a>
         </span>
 
-        <a href="{% url 'signin' %}" class="login-button btn btn-white text-black text-capitalize">Admin/Staff Login</a>
+       
       </div>
       <div class="card card-body mt-n6" style="z-index: 200; background-color:#bff1c4;">
         <div class="row gx-4">
-           <div class="col-auto">
+          <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
-              <a href="{% url 'visitor_index'%}"><img src="{% static 'img/logo.png' %}" alt="profile_image" class="w-100 border-radius-lg"></a>
+              <a href="{% url 'visitor_index'%}"><img src="{% static 'img/logo.png' %}" alt="profile_image"
+                  class="w-100 border-radius-lg"></a>
             </div>
           </div>
           <div class="col-auto my-auto">
             <div class="h-100">
-              <a href="{% url 'visitor_index'%}" class="border-bottom border-dark border-3" style="font-size:26px; font-weight:bolder;">
+              <a href="{% url 'visitor_index'%}" class="border-bottom border-dark border-3"
+                style="font-size:26px; font-weight:bolder;">
                 JHCSC | eRepository
               </a> <br>
               <a href="{% url 'visitor_index'%}" class="mb-0 font-weight-bold text-sm">
@@ -76,14 +80,14 @@
                 <span class="program text-dark">Filter by:</span>
                 <button class="btn btn-info p-2 text-dark mt-1 text-capitalize program">Program
                   <svg xmlns="http://www.w3.org/2000/svg" height="1em"
-                       viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                    viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                     <style>
                       svg {
                         fill: #000
                       }
                     </style>
                     <path
-                          d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
+                      d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
                   </svg>
                 </button>
                 <div class="dropdown-content">
@@ -112,12 +116,42 @@
         </div>
       </div>
 
-      <div id="noMatchText" class="h3 text-center text-white p-4 md:p-0" style="display: none; margin-top:150px; margin-bottom:150px;">
-        <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM155.7 250.2L192 302.1l36.3-51.9c7.6-10.9 22.6-13.5 33.4-5.9s13.5 22.6 5.9 33.4L221.3 344l46.4 66.2c7.6 10.9 5 25.8-5.9 33.4s-25.8 5-33.4-5.9L192 385.8l-36.3 51.9c-7.6 10.9-22.6 13.5-33.4 5.9s-13.5-22.6-5.9-33.4L162.7 344l-46.4-66.2c-7.6-10.9-5-25.8 5.9-33.4s25.8-5 33.4 5.9z"/></svg>
-        <h3 class="text-black font-weight-bold">The file you're looking for doesn't exist</h3>
-  
+      {% for message in messages %}
+      {% if message.level_tag == 'success' %}
+
+      <div class="modal fade" id="some" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content p-3" style="overflow: hidden;">
+            <center>
+              <p class="text-lg text-dark mb-4">{{message}}!</p>
+
+            </center>
+          </div>
+        </div>
       </div>
-      
+      <script>
+        // Use jQuery to show the modal when the page loads
+        $(document).ready(function () {
+          $('#some').modal('show');
+        });
+      </script>
+      {% else %}
+      <p class="alert bg-info text-white" role="alert">{{ message }}</p>
+      {% endif %}
+      {% endfor %}
+
+      <div id="noMatchText" class="h3 text-center text-white p-4 md:p-0"
+        style="display: none; margin-top:150px; margin-bottom:150px;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="2em"
+          viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path
+            d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM155.7 250.2L192 302.1l36.3-51.9c7.6-10.9 22.6-13.5 33.4-5.9s13.5 22.6 5.9 33.4L221.3 344l46.4 66.2c7.6 10.9 5 25.8-5.9 33.4s-25.8 5-33.4-5.9L192 385.8l-36.3 51.9c-7.6 10.9-22.6 13.5-33.4 5.9s-13.5-22.6-5.9-33.4L162.7 344l-46.4-66.2c-7.6-10.9-5-25.8 5.9-33.4s25.8-5 33.4 5.9z" />
+        </svg>
+        <h3 class="text-black font-weight-bold">The file you're looking for doesn't exist</h3>
+
+      </div>
+
       <div class="container-fluid">
         <div class="row">
           <div class="col-12 mt-4">
@@ -140,65 +174,65 @@
                           <div class="card-custom-avatar">
                             {% if manuscript_item.program == 'BSIT' %}
                             <img class="img-fluid" src="{% static 'img/logos/SET.png' %}" draggable="false"
-                                 alt="SET LOGO" />
+                              alt="SET LOGO" />
                             {% elif manuscript_item.program == 'BSCE' %}
-                             <img class="img-fluid" src="{% static 'img/logos/SET.png' %}" draggable="false"
-                                 alt="SET LOGO" />
+                            <img class="img-fluid" src="{% static 'img/logos/SET.png' %}" draggable="false"
+                              alt="SET LOGO" />
 
                             {% elif manuscript_item.program == 'BSSW' %}
                             <img class="img-fluid" src="{% static 'img/logos/SAS.png' %}" draggable="false"
-                                 alt="SAS LOGO" />
+                              alt="SAS LOGO" />
                             {% elif manuscript_item.program == 'BSM' %}
                             <img class="img-fluid" src="{% static 'img/logos/SAS.png' %}" draggable="false"
-                                 alt="SAS LOGO" />
+                              alt="SAS LOGO" />
                             {% elif manuscript_item.program == 'BAPos' %}
                             <img class="img-fluid" src="{% static 'img/logos/SAS.png' %}" draggable="false"
-                                 alt="SAS LOGO" />
+                              alt="SAS LOGO" />
                             {% elif manuscript_item.program == 'BAELS' %}
                             <img class="img-fluid" src="{% static 'img/logos/SAS.png' %}" draggable="false"
-                                 alt="SAS LOGO" />
+                              alt="SAS LOGO" />
 
                             {% elif manuscript_item.program == 'BSA' %}
                             <img class="img-fluid" src="{% static 'img/logos/SAFES.png' %}" draggable="false"
-                                 alt="SAFES LOGO" />
+                              alt="SAFES LOGO" />
                             {% elif manuscript_item.program == 'BSF' %}
                             <img class="img-fluid" src="{% static 'img/logos/SAFES.png' %}" draggable="false"
-                                 alt="SAFES LOGO" />
+                              alt="SAFES LOGO" />
                             {% elif manuscript_item.program == 'BSES' %}
                             <img class="img-fluid" src="{% static 'img/logos/SAFES.png' %}" draggable="false"
-                                 alt="SAFES LOGO" />     
+                              alt="SAFES LOGO" />
 
                             {% elif manuscript_item.program == 'BEED' %}
                             <img class="img-fluid" src="{% static 'img/logos/STE.png' %}" draggable="false"
-                                 alt="STE LOGO" />
+                              alt="STE LOGO" />
                             {% elif manuscript_item.program == 'BSED' %}
                             <img class="img-fluid" src="{% static 'img/logos/STE.png' %}" draggable="false"
-                                 alt="STE LOGO" />
-                           
+                              alt="STE LOGO" />
+
                             {% endif %}
 
                           </div>
                           <span class="text-md downloads">
                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
                               <path
-                                    d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                                d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
                             </svg> {{ manuscript_item.downloads}} downloads
                           </span>
                           <div class="card-custom-year">
                             <p class="btn btn-info">{{ manuscript_item.year }}</p>
                           </div>
                           <div class="card-body" style="overflow-y: auto; height:100px">
-                            <h6 class="card-title">{{ manuscript_item.title}} - <span
-                                    class="text-info">{{ manuscript_item.program }}</span>
+                            <h6 class="card-title">{{ manuscript_item.title}} - <span class="text-info">{{
+                                manuscript_item.program }}</span>
 
                             </h6>
                             <p class="text-sm"><b>Authors:</b> {{ manuscript_item.authors }}</p>
                           </div>
                           <div class="card-footer">
                             <button type="button" class="btn btn-info" data-toggle="modal"
-                                    data-target="#download{{manuscript_item.id}}">Download</button>
+                              data-target="#download{{manuscript_item.id}}">Download</button>
                             <button type="button" class="btn btn-outline-info" data-toggle="modal"
-                                    data-target="#view{{manuscript_item.id}}">View</button>
+                              data-target="#view{{manuscript_item.id}}">View</button>
                           </div>
                         </div>
                       </div>
@@ -273,8 +307,8 @@
       <footer class="footer pt-4 p-4" style="background-color: #bff1c4;">
         <div class="container-fluid">
           <div class="copyright text-center text-sm text-dark text-lg-start">
-            <center>Copyright © JHCSC Main | All Rights Reserved <img src="{% static 'img/fb.png' %}" class="ml-2"
-                   width="25" alt=""> </center>
+            <center>Copyright © JHCSC Main | All Rights Reserved <a href="https://www.facebook.com/profile.php?id=100064622084746" target="_blank"><img src="{% static 'img/fb.png' %}" class="ml-2"
+                width="25" alt=""></a> </center>
           </div>
         </div>
       </footer>
@@ -284,7 +318,7 @@
     <!-- For view PDF -->
     {% for manuscript_item in manuscripts %}
     <div class="modal fade" id="view{{manuscript_item.id}}" tabindex="-1" role="dialog"
-         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md">
         <div class="modal-content p-3 modalPDFview" style="overflow: hidden;">
           <p class="text-lg text-dark mb-4">You're viewing <b>{{manuscript_item.title}}</b> File.</p>
@@ -296,7 +330,7 @@
 
           <div style="position:absolute; bottom:20px; left:30px; z-index:300;">
             <button class="btn btn-secondary mt-4" style="width: 100px; z-index:200; "
-                    data-dismiss="modal">Close</button>
+              data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -368,7 +402,7 @@
     <!-- for download request -->
     {% for manuscript_item in manuscripts %}
     <div class="modal fade" id="download{{manuscript_item.id}}" tabindex="-1" role="dialog"
-         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md">
         <div class="modal-content p-3">
           <p class="text-lg text-dark mb-4">Request Download for <b>{{manuscript_item.title}}</b>.</p>
@@ -378,12 +412,12 @@
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
               <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="download"
-                     placeholder="Enter email">
+                placeholder="Enter email">
               <small id="download" class="form-text text-muted">We'll never share your email with anyone else.</small>
               <input style="opacity: 0; display:none;" type="text" name="file_link" class="form-control"
-                     value="{{manuscript_item.filename.url}}">
+                value="{{manuscript_item.filename.url}}">
               <input style="opacity: 0; display:none;" type="text" name="file_name" class="form-control"
-                     value="{{manuscript_item.id}}">
+                value="{{manuscript_item.id}}">
             </div>
             <button type="submit" class="btn btn-info">Send Request</button>
             <button class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -435,14 +469,14 @@
     <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
 </body>
 
 </html>

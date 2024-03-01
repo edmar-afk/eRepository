@@ -1,315 +1,509 @@
 {% load static %}
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+	integrity="sha512-fFzH9sT+M0y+nT+t3MXb4vJ2vIdNKkzj7tg3aLqx+uPlSRpX3LvJ0Rkz3ZWGv31PTsIVw7uZvFbTRq0sxa5GYQ=="
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer" />
 
 <div class="col">
-  <div class="col mt-4">
-    <div class="card">
-      <div class="card-header pb-0 px-3">
-        <div class="row">
-          <div class="col-lg-6 col-7">
-            <h6>Manuscripts Table</h6>
-            {% for message in messages %}
-            {% if message.level_tag == 'success' %}
-            <p class="alert bg-success text-white" role="alert">{{ message }}</p>
-            {% else %}
-            <p class="alert bg-info text-white" role="alert">{{ message }}</p>
-            {% endif %}
-            {% endfor %}
-          </div>
-          <div class="col-lg-6 col-5 my-auto text-end">
-            <div class=" float-lg-end pe-4">
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg">Add
-                Manuscript</button>
+	<div class="col mt-4">
+		<div class="card">
+			<div class="card-header pb-0 px-3">
+				<div class="row">
+					<div class="col-lg-6 col-7">
+						<h6>Manuscripts Table</h6>
+						{% for message in messages %} {% if message.level_tag == 'success' %}
+						<p
+							class="alert bg-success text-white"
+							role="alert">
+							{{ message }}
+						</p>
+						{% else %}
+						<p
+							class="alert bg-info text-white"
+							role="alert">
+							{{ message }}
+						</p>
+						{% endif %} {% endfor %}
+					</div>
+					<div class="col-lg-6 col-5 my-auto text-end">
+						<div class="float-lg-end pe-4">
+							<button
+								type="button"
+								class="btn btn-success"
+								data-toggle="modal"
+								data-target=".bd-example-modal-lg">
+								Add Manuscript
+							</button>
+						</div>
+						<div class="float-lg-end pe-4">
+							<form class="form-inline">
+								<div class="input-group">
+									<div class="input-group">
+										<span class="input-group-text text-body">
+											<i
+												class="fas fa-search"
+												aria-hidden="true"></i>
+										</span>
+										<input
+											type="text"
+											class="form-control"
+											id="searchInput"
+											placeholder="Search here..." />
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
 
-            </div>
-            <div class=" float-lg-end pe-4">
-              <form class="form-inline">
-                <div class="input-group">
-                  <div class="input-group">
-                    <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" id="searchInput" placeholder="Search here...">
-                  </div>
+			<div id="itemsContainer">
+				<div class="card-body pt-4 p-3">
+					{% for manuscript_items in manuscripts %}
+					<div
+						class="box list-group"
+						style="overflow-x: hidden">
+						<div class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+							<div class="d-flex flex-column">
+								<h6 class="mb-3 text-sm">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										height="1.5em"
+										viewBox="0 0 512 512">
+										<!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+										<path
+											d="M64 464H96v48H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H229.5c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3V288H336V160H256c-17.7 0-32-14.3-32-32V48H64c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16zM176 352h32c30.9 0 56 25.1 56 56s-25.1 56-56 56H192v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V448 368c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24H192v48h16zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H304c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H320v96h16zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V432 368z" />
+									</svg>
+									<a
+										href="#"
+										data-toggle="modal"
+										data-target="#view{{manuscript_items.id}}">
+										{{ manuscript_items.title }} -
+										<span class="text-secondary">{{manuscript_items.program}}</span>
+									</a>
+								</h6>
+								<span class="mb-2 text-sm">
+									Authors:
+									<span class="text-dark font-weight-bold ms-sm-2">{{manuscript_items.authors}}</span>
+									,
+								</span>
+								<span class="text-sm mb-2">
+									Year:
+									<span class="text-dark ms-sm-2 font-weight-bold">{{manuscript_items.year}}</span>
+								</span>
+								<span class="mb-2 text-sm">
+									Identifier:
+									<span class="text-dark ms-sm-2 font-weight-bold">{{manuscript_items.identifier}}</span>
+								</span>
+								<span class="mb-2 text-sm">
+									Accession Number:
+									<span class="text-dark ms-sm-2 font-weight-bold">{{manuscript_items.accessionnum}}</span>
+								</span>
+								<span class="mb-2 text-sm">
+									Downloads:
+									<span class="text-dark ms-sm-2 font-weight-bold">{{manuscript_items.downloads}}</span>
+								</span>
+							</div>
+							<div class="ms-auto text-end">
+								<a
+									href="{% url 'deletebooks' manuscript_items.id %}"
+									class="btn btn-link text-danger text-gradient px-3 mb-0">
+									<i class="far fa-trash-alt me-2"></i>
+									Delete
+								</a>
+								<a
+									href="#"
+									data-toggle="modal"
+									data-target="#modal{{manuscript_items.id}}"
+									class="btn btn-link text-info text-gradient px-3 mb-0">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										height="1em"
+										class="me-2 text-info"
+										viewBox="0 0 512 512">
+										<path
+											d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" />
+									</svg>
+									Edit
+								</a>
+								<a
+									href="#"
+									data-toggle="modal"
+									data-target="#view{{manuscript_items.id}}"
+									class="btn btn-link text-info text-gradient px-1 mb-0">
+									<i class="far fa-eye"></i>
+									View
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+				<div
+					class="modal fade"
+					id="modal{{manuscript_items.id}}"
+					tabindex="-1"
+					role="dialog"
+					aria-labelledby="myLargeModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog modal-xl">
+						<div class="modal-content">
+							<div class="row">
+								<!-- Left Column -->
+								<div class="col-md-6 mt-2">
+									<div class="card h-100">
+										<div class="card-header pb-0 px-3">
+											<div class="row">
+												<div class="mb-4">
+													<h6>
+														Edit
+														<span class="text-warning">{{manuscript_items.title}}</span>
+														Manuscript
+													</h6>
+												</div>
+												<form
+													method="POST"
+													action="{% url 'editbooks' manuscript_items.id %}"
+													enctype="multipart/form-data">
+													{% csrf_token %}
+													<!-- Material Title -->
+													<div class="form-group">
+														<label for="inputAddress">Material Title</label>
+														<input
+															type="text"
+															name="title"
+															class="form-control"
+															id="inputAddress"
+															value="{{manuscript_items.title}}"
+															required />
+													</div>
 
+													<!-- Author/s -->
+													<div class="form-group">
+														<label for="inputAddress2">Author/s</label>
+														<input
+															type="text"
+															name="authors"
+															class="form-control"
+															id="inputAddress2"
+															value="{{manuscript_items.authors}}"
+															required />
+													</div>
 
-      <div id="itemsContainer">
-        <div class="card-body pt-4 p-3">
+													<!-- PDF Upload -->
+													<div class="form-group">
+														<label
+															class="form-label"
+															for="editPdfUpload">
+															Choose PDF file
+															<span
+																id="resultedit"
+																class="text-warning">
+																Must be a4 size
+															</span>
+														</label>
+														<input
+															type="file"
+															name="files"
+															class="form-control"
+															id="editPdfUpload"
+															accept=".pdf"
+															onchange="validateFileEdit(event)" />
+													</div>
 
-          {% for manuscript_items in manuscripts %}
-          <div class="box list-group" style="overflow-x: hidden;">
-            <div class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-              <div class="d-flex flex-column">
-                <h6 class="mb-3 text-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" height="1.5em"
-                    viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                    <path
-                      d="M64 464H96v48H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H229.5c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3V288H336V160H256c-17.7 0-32-14.3-32-32V48H64c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16zM176 352h32c30.9 0 56 25.1 56 56s-25.1 56-56 56H192v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V448 368c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24H192v48h16zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H304c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H320v96h16zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V432 368z" />
-                  </svg>
-                  {{ manuscript_items.title }} - <span class="text-secondary">{{manuscript_items.program}}</span>
-                </h6>
-                <span class="mb-2 text-sm">Authors:
-                  <span class="text-dark font-weight-bold ms-sm-2">{{manuscript_items.authors}}</span>,
-                </span>
-                <span class="text-sm mb-2">Year: <span
-                    class="text-dark ms-sm-2 font-weight-bold">{{manuscript_items.year}}</span></span>
-                <span class="mb-2 text-sm">Downloads: <span
-                    class="text-dark ms-sm-2 font-weight-bold">{{manuscript_items.downloads}}</span></span>
-              </div>
-              <div class="ms-auto text-end">
-                <a href="{% url 'deletebooks' manuscript_items.id %}"
-                  class="btn btn-link text-danger text-gradient px-3 mb-0"><i
-                    class="far fa-trash-alt me-2"></i>Delete</a>
-                <a href="#" data-toggle="modal" data-target="#modal{{manuscript_items.id}}"
-                  class="btn btn-link text-info text-gradient px-3 mb-0"><svg xmlns="http://www.w3.org/2000/svg"
-                    height="1em" class="me-2 text-info"
-                    viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                    <path
-                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" />
-                  </svg>Edit</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="modal fade" id="modal{{manuscript_items.id}}" tabindex="-1" role="dialog"
-          aria-labelledby="myLargeModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-              <div class="row">
-                <!-- Left Column -->
-                <div class="col-md-6 mt-2">
-                  <div class="card h-100">
-                    <div class="card-header pb-0 px-3">
-                      <div class="row">
-                        <div class="mb-4">
-                          <h6>Edit <span class="text-warning">{{manuscript_items.title}}</span> Manuscript</h6>
-                        </div>
-                        <form method="POST" action="{% url 'editbooks' manuscript_items.id %}"
-                          enctype="multipart/form-data">
-                          {% csrf_token %}
-                          <!-- Material Title -->
                           <div class="form-group">
-                            <label for="inputAddress">Material Title</label>
-                            <input type="text" name="title" class="form-control" id="inputAddress"
-                              value="{{manuscript_items.title}}" required>
-                          </div>
-
-                          <!-- Author/s -->
-                          <div class="form-group">
-                            <label for="inputAddress2">Author/s</label>
-                            <input type="text" name="authors" class="form-control" id="inputAddress2"
-                              value="{{manuscript_items.authors}}" required>
-                          </div>
-
-                          <!-- PDF Upload -->
-                          <div class="form-group">
-                            <label class="form-label" for="editPdfUpload">Choose PDF file
-                              <span id="resultedit" class="text-warning">Must be a4 size</span></label>
-                            <input type="file" name="files" class="form-control" id="editPdfUpload" accept=".pdf"
-                              onchange="validateFileEdit(event)" />
-                          </div>
-
-                          <!-- Programs Dropdown -->
-                          <div class="form-group">
-                            <label class="form-label" for="program">Programs:</label>
-                            <select class="form-select" name="program">
-                              <option selected value="{{manuscript_items.program}}">{{manuscript_items.program}}
-                              </option>
-                              <option value="BSIT">BSIT</option>
-                              <option value="BSED">BSED</option>
-                              <option value="BEED">BEED</option>
-                              <option value="BSSW">BSSW</option>
-                              <option value="BAPos">BAPos</option>
-                              <option value="BAELS">BAELS</option>
-                              <option value="BSM">BSM</option>
-                              <option value="BSA">BSA</option>
-                              <option value="BSF">BSF</option>
-                              <option value="BSES">BSES</option>
-                              <option value="BSCE">BSCE</option>
+                            <label class="form-label" for="identifier">Identifier:</b></label>
+                            <select class="form-select" name="identifier">
+                              <option selected value="{{manuscript_items.identifier}}">{{manuscript_items.identifier}}</option>
+                              <option value="Dumingag">Dumingag</option>
+                              <option value="Canuto">Canuto</option>
+                              <option value="Pagadian">Pagadian</option>
                             </select>
                           </div>
 
-                          <!-- Year -->
                           <div class="form-group">
-                            <label for="year">Year</label>
-                            <input type="text" name="year" class="form-control" id="year"
-                              value="{{manuscript_items.year}}">
+                            <label for="accession">Accession Number:</label>
+                            <input type="text" name="accessionnum" class="form-control" id="accession"
+                              placeholder="{{manuscript_items.accessionnum}}" value="{{manuscript_items.accessionnum}}" required>
                           </div>
+													<!-- Programs Dropdown -->
+													<div class="form-group">
+														<label
+															class="form-label"
+															for="program">
+															Programs:
+														</label>
+														<select
+															class="form-select"
+															name="program">
+															<option
+																selected
+																value="{{manuscript_items.program}}">
+																{{manuscript_items.program}}
+															</option>
+															<option value="BSIT">BSIT</option>
+															<option value="BSED">BSED</option>
+															<option value="BEED">BEED</option>
+															<option value="BSSW">BSSW</option>
+															<option value="BAPos">BAPos</option>
+															<option value="BAELS">BAELS</option>
+															<option value="BSM">BSM</option>
+															<option value="BSA">BSA</option>
+															<option value="BSF">BSF</option>
+															<option value="BSES">BSES</option>
+															<option value="BSCE">BSCE</option>
+														</select>
+													</div>
 
-                          <!-- Abstract/Executive Summary Page No. -->
-                          <div class="form-group">
-                            <label for="inputAbstractES">Abstract/Executive Summary Page No.</label>
-                            <input type="number" name="abstractESNum" class="form-control" id="inputAbstractES"
-                              value="{{manuscript_items.abstractES_num}}">
-                          </div>
+													<!-- Year -->
+													<div class="form-group">
+														<label for="year">Year</label>
+														<input
+															type="text"
+															name="year"
+															class="form-control"
+															id="year"
+															value="{{manuscript_items.year}}" />
+													</div>
 
-                          <!-- Submit and Close Buttons -->
-                          <button type="submit" class="btn btn-info">Edit</button>
-                          <button class="btn btn-danger" data-dismiss="modal">Close</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+													<!-- Abstract/Executive Summary Page No. -->
+													<div class="form-group">
+														<label for="inputAbstractES">Abstract/Executive Summary Page No.</label>
+														<input
+															type="number"
+															name="abstractESNum"
+															class="form-control"
+															id="inputAbstractES"
+															value="{{manuscript_items.abstractES_num}}" />
+													</div>
 
-                <!-- Right Column -->
-                <div class="col-md-6 mt-4">
-                  <div class="card">
-                    <div class="card-header pb-0 px-3">
-                      <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Pages
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                          <div id="editDocumentList"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body p-3" style="max-height: 540px; overflow-y:scroll; overflow-x:scroll;">
-                      <div id="editPdfPreview">
-                        <center>
-                          <img src="{% static 'img/pdf.jpg' %}" width="390" draggable="false" alt="">
-                          <h2>Insert PDF File</h2>
-                        </center>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+													<!-- Submit and Close Buttons -->
+													<button
+														type="submit"
+														class="btn btn-info">
+														Edit
+													</button>
+													<button
+														class="btn btn-danger"
+														data-dismiss="modal">
+														Close
+													</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
 
-        {% endfor %}
+								<!-- Right Column -->
+								<div class="col-md-6 mt-4">
+									<div class="card">
+										<div class="card-header pb-0 px-3">
+											<div class="dropdown">
+												<button
+													class="btn btn-secondary dropdown-toggle"
+													type="button"
+													id="dropdownMenu2"
+													data-toggle="dropdown"
+													aria-haspopup="true"
+													aria-expanded="false">
+													Pages
+												</button>
+												<div
+													class="dropdown-menu"
+													aria-labelledby="dropdownMenu2">
+													<div id="editDocumentList"></div>
+												</div>
+											</div>
+										</div>
+										<div
+											class="card-body p-3"
+											style="max-height: 540px; overflow-y: scroll; overflow-x: scroll">
+											<div id="editPdfPreview">
+												<center>
+													<img
+														src="{% static 'img/pdf.jpg' %}"
+														width="390"
+														draggable="false"
+														alt="" />
+													<h2>Insert PDF File</h2>
+												</center>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-      </div>
+				<div
+					class="modal fade"
+					id="view{{manuscript_items.id}}"
+					tabindex="-1"
+					role="dialog"
+					aria-labelledby="errorEditModalLabel"
+					aria-hidden="true">
+					<div
+						class="modal-dialog modal-dialog-centered modal-lg"
+						role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5
+									class="modal-title"
+									id="errorEditModalLabel">
+									You're viewing
+									<b class="text-success">{{manuscript_items.title}}</b>
+									manuscript.
+								</h5>
+								<button
+									class="btn btn-danger mt-2 mr-3"
+									data-dismiss="modal">
+									Close
+								</button>
+							</div>
+							<div class="modal-body">
+								<center>
+									<embed
+										src="{{ manuscript_items.filename.url }}"
+										type="application/pdf"
+										width="100%"
+										height="500px" />
+								</center>
+							</div>
+						</div>
+					</div>
+				</div>
 
-    </div>
-  </div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 </div>
-
 
 <!-- Bootstrap Modal -->
-<div class="modal fade" id="errorEditModal" tabindex="-1" role="dialog" aria-labelledby="errorEditModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-warning">
-        <h5 class="modal-title" id="errorEditModalLabel">Error</h5>
-      </div>
-      <div class="modal-body bg-warning">
-        <center><img src="{% static 'img/file_error.png' %}" width="250" alt="">
-          <h3 class="mt-4" id="errorEditMessage"></h3>
-        </center>
-      </div>
-
-    </div>
-  </div>
+<div
+	class="modal fade"
+	id="errorEditModal"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="errorEditModalLabel"
+	aria-hidden="true">
+	<div
+		class="modal-dialog modal-dialog-centered"
+		role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-warning">
+				<h5
+					class="modal-title"
+					id="errorEditModalLabel">
+					Error
+				</h5>
+			</div>
+			<div class="modal-body bg-warning">
+				<center>
+					<img
+						src="{% static 'img/file_error.png' %}"
+						width="250"
+						alt="" />
+					<h3
+						class="mt-4"
+						id="errorEditMessage"></h3>
+				</center>
+			</div>
+		</div>
+	</div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"></script>
 <script src="{% static 'js/pdfedit.js' %}"></script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-      const searchInput = document.getElementById("searchInput");
-      const container = document.getElementById("itemsContainer");
-      const items = container.getElementsByClassName("box");
+	document.addEventListener("DOMContentLoaded", function () {
+		const searchInput = document.getElementById("searchInput");
+		const container = document.getElementById("itemsContainer");
+		const items = container.getElementsByClassName("box");
 
-      searchInput.addEventListener("input", function () {
-        const searchTerm = searchInput.value.toLowerCase();
+		searchInput.addEventListener("input", function () {
+			const searchTerm = searchInput.value.toLowerCase();
 
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i];
-          const text = item.textContent.toLowerCase();
+			for (let i = 0; i < items.length; i++) {
+				const item = items[i];
+				const text = item.textContent.toLowerCase();
 
-          if (text.includes(searchTerm)) {
-            item.style.display = "block";
-          } else {
-            item.style.display = "none";
-          }
-        }
-      });
-    });
-
+				if (text.includes(searchTerm)) {
+					item.style.display = "block";
+				} else {
+					item.style.display = "none";
+				}
+			}
+		});
+	});
 </script>
 
-
 <script>
+	function validateFileEdit(event) {
+		var fileInputEdit = event.target;
+		var fileEdit = fileInputEdit.files[0];
 
-  function validateFileEdit(event) {
-    var fileInputEdit = event.target;
-    var fileEdit = fileInputEdit.files[0];
+		if (fileEdit) {
+			var fileTypeEdit = fileEdit.type.toLowerCase();
+			if (fileTypeEdit !== "application/pdf") {
+				fileInputEdit.value = ""; // Reset the file input
+				// Close any open modal
+				displayErrorMessageEdit("Only PDF files are allowed."); // Display error message
+				setTimeout(closeModalEdit, 5000);
+			}
+		}
 
-    if (fileEdit) {
-      var fileTypeEdit = fileEdit.type.toLowerCase();
-      if (fileTypeEdit !== 'application/pdf') {
+		const fileSizeEdit = event.target.files[0];
 
-        fileInputEdit.value = ''; // Reset the file input
-        // Close any open modal
-        displayErrorMessageEdit('Only PDF files are allowed.'); // Display error message
-        setTimeout(closeModalEdit, 5000);
-      }
-    }
+		// Load the PDF file using pdf.js
+		const readerEdit = new FileReader();
+		readerEdit.onload = function () {
+			const typedArrayEdit = new Uint8Array(this.result); // Fix this line
+			pdfjsLib.getDocument(typedArrayEdit).promise.then(function (pdfEdit) {
+				// Fetch the first page of the PDF
+				pdfEdit.getPage(1).then(function (pageEdit) {
+					const viewportEdit = pageEdit.getViewport({ scale: 1 });
+					const pageWidthEdit = viewportEdit.width; // PDF page width in points
+					const pageHeightEdit = viewportEdit.height; // PDF page height in points
 
-    const fileSizeEdit = event.target.files[0];
+					// Compare the page dimensions to determine the slide size
+					if (pageWidthEdit <= 596 && pageHeightEdit <= 843) {
+						const mySpanEdit = document.getElementById("resultedit");
+						mySpanEdit.classList.add("text-success");
+						mySpanEdit.classList.remove("text-warning", "text-danger");
+						mySpanEdit.innerHTML = "A4 size Detected! Acceptable File"; // Fix this line
+					} else if (pageWidthEdit <= 612 && pageHeightEdit <= 792) {
+						const mySpanEdit = document.getElementById("resultedit");
+						mySpanEdit.classList.add("text-success");
+						mySpanEdit.classList.remove("text-warning", "text-danger");
+						mySpanEdit.innerHTML = "Short size Detected! Acceptable File"; // Fix this line
+					} else {
+						const mySpanEdit = document.getElementById("resultedit");
+						mySpanEdit.classList.add("text-danger");
+						mySpanEdit.classList.remove("text-warning", "text-success");
+						mySpanEdit.innerHTML = "Not Acceptable File, must be A4 or short size"; // Fix this line
+						// alert("Size is not acceptable: Width:" + pageWidthEdit + " Height: " + pageHeightEdit);
+						fileInputEdit.value = "";
+					}
+				});
+			});
+		};
+		readerEdit.readAsArrayBuffer(fileSizeEdit);
+	}
 
-    // Load the PDF file using pdf.js
-    const readerEdit = new FileReader();
-    readerEdit.onload = function () {
-      const typedArrayEdit = new Uint8Array(this.result); // Fix this line
-      pdfjsLib.getDocument(typedArrayEdit).promise.then(function (pdfEdit) {
-        // Fetch the first page of the PDF
-        pdfEdit.getPage(1).then(function (pageEdit) {
-          const viewportEdit = pageEdit.getViewport({ scale: 1 });
-          const pageWidthEdit = viewportEdit.width; // PDF page width in points
-          const pageHeightEdit = viewportEdit.height; // PDF page height in points
+	function displayErrorMessageEdit(message) {
+		var errorMessageElementEdit = document.getElementById("errorEditMessage");
+		errorMessageElementEdit.textContent = message;
+		$("#errorEditModal").modal("show"); // Show the error modal
+	}
 
-          // Compare the page dimensions to determine the slide size
-          if (pageWidthEdit <= 596 && pageHeightEdit <= 843) {
-            const mySpanEdit = document.getElementById('resultedit');
-            mySpanEdit.classList.add('text-success');
-            mySpanEdit.classList.remove('text-warning', 'text-danger');
-            mySpanEdit.innerHTML = "A4 size Detected! Acceptable File"; // Fix this line
+	function closeModalEdit() {
+		$("#errorEditModal").modal("hide");
+	}
 
-          } else if (pageWidthEdit <= 612 && pageHeightEdit <= 792) {
-            const mySpanEdit = document.getElementById('resultedit');
-            mySpanEdit.classList.add('text-success');
-            mySpanEdit.classList.remove('text-warning', 'text-danger');
-            mySpanEdit.innerHTML = "Short size Detected! Acceptable File"; // Fix this line
-
-          } else {
-            const mySpanEdit = document.getElementById('resultedit');
-            mySpanEdit.classList.add('text-danger');
-            mySpanEdit.classList.remove('text-warning', 'text-success');
-            mySpanEdit.innerHTML = "Not Acceptable File, must be A4 or short size"; // Fix this line
-            // alert("Size is not acceptable: Width:" + pageWidthEdit + " Height: " + pageHeightEdit);
-            fileInputEdit.value = '';
-          }
-        });
-      });
-    };
-    readerEdit.readAsArrayBuffer(fileSizeEdit);
-  }
-
-  function displayErrorMessageEdit(message) {
-    var errorMessageElementEdit = document.getElementById('errorEditMessage');
-    errorMessageElementEdit.textContent = message;
-    $('#errorEditModal').modal('show'); // Show the error modal
-  }
-
-  function closeModalEdit() {
-    $('#errorEditModal').modal('hide');
-  }
-
-  function handleFileSelectEdit(event) {
-
-  }
-
+	function handleFileSelectEdit(event) {}
 </script>

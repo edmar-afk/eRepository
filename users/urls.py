@@ -27,9 +27,9 @@ urlpatterns = [
     path('<int:staff_id>/updatestaff/', views.updatestaff, name='updatestaff'),
     path('<int:user_id>/deleteusers/', views.delete_users, name='deleteusers'),
     path('<int:books_id>/deletebooks/', views.delete_books, name='deletebooks'),
+    path('<int:book_id>/viewbook/', views.view_manuscript, name='viewbook'),
     path('<int:book_id>/editbooks/', views.edit_books, name='editbooks'),
-    path('<int:request_id>/deleterequest/',
-         views.delete_request, name='deleterequest'),
+    path('<int:request_id>/deleterequest/', views.delete_request, name='deleterequest'),
 
     # path('increment_count' , views.increment_count , name="increment_count"),
 
