@@ -1,17 +1,16 @@
-.bg{
-    background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.756), rgba(255, 255, 255, 0.762)), url('../img/Picture1.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    height: 100%;
+.bg {	background-image: linear-gradient(to bottom right, rgba(53, 51, 51, 0.96), rgba(79, 76, 76, 0.942)),
+		url("../img/Picture1.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	height: 100%;
 }
 
-
-.bg1{
-    background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.332), rgba(255, 255, 255, 0.326)), url('../img/Picture1.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    height: 100%;
+.bg1 {
+	background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.332), rgba(255, 255, 255, 0.326)),
+		url("../img/Picture1.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	height: 100%;
 }
-

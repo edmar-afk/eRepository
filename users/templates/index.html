@@ -1,51 +1,77 @@
-{% load static tailwind_tags %}
-
-<!DOCTYPE html>
+{% load static tailwind_tags %}<!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>Welcome to Erepository</title>
+		{% tailwind_css %}
+		<link
+			rel="icon"
+			type="image/png"
+			href="{% static 'img/logo.png' %}" />
+		<link
+			rel="stylesheet"
+			href="{% static 'css/user-signin.css' %}" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+			rel="stylesheet" />
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Erepository</title>
-    {% tailwind_css %}
-    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/user-signin.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css" rel="stylesheet" />
-</head>
+	<body class="bg font-sans">
+		<div class="mb-16">
+			<div class="bg-transparent border-gray-200 h-32 flex items-center justify-between">
+				<div class="mx-12">
+					<p class="text-md sm:text-3xl font-semibold font-arial text-white">eRepository | JHCSC</p>
+				</div>
+				<div class="mx-12">
+					<a
+						href="https://flowbite.com/"
+						class="flex items-center">
+						<img
+							src="{% static 'img/logo.png' %}"
+							width="60"
+							alt="JH Logo" />
+						<span class="self-center text-2xl font-semibold whitespace-nowrap"></span>
+					</a>
+				</div>
+			</div>
+		</div>
 
-<body class="bg">
+		<div class="mt-12 flex flex-col justify-center text-center">
+			<div class="font-bold font-copper">
+				<p class="text-7xl bg-gradient-to-r from-white via-green-400 to-green-900 text-transparent bg-clip-text">
+					Access the online storage
+				</p>
+				<p class="text-7xl bg-gradient-to-r from-white via-green-400 to-green-900 text-transparent bg-clip-text">
+					of THESES
+				</p>
+				<p class="text-7xl bg-gradient-to-b from-white via-green-400 to-green-900 text-transparent bg-clip-text">and</p>
+				<p class="text-7xl bg-gradient-to-r from-white via-green-400 to-green-900 text-transparent bg-clip-text">
+					CAPSTONE PROJECTS
+				</p>
+			</div>
+			<div class="mt-16">
+				<a
+					href="{% url 'signup_stud' %}"
+					class="text-md text-white font-bold bg-transparent hover:bg-green-600 hover:text-gray-800 duration-300 focus:ring-4 hover:mr-4 border-4 border-green-600 rounded-lg px-5 py-2.5 mr-2 mb-2">
+					<i class="fa-solid fa-user-plus"></i>
+					SIGNUP
+				</a>
 
-    <div>
-        <div class="bg-green-200 border-gray-200 h-32 flex items-center justify-between">
-            <div class="mx-12">
-                <p class="text-md sm:text-5xl font-semibold font-arial">eRepository | JHCSC</p>
-            </div>
-            <div class="mx-12">
-                <a href="https://flowbite.com/" class="flex items-center">
-                    <img src="{% static 'img/logo.png' %}" width="60" alt="JH Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap"></span>
-                </a>
-            </div>
-        </div>
-    </div>
+				<a
+					href="{% url 'login' %}"
+					class="text-white font-bold items-center bg-transparent hover:bg-green-600 hover:text-gray-800 hover:ml-4 duration-300 focus:ring-4 border-4 border-green-600 rounded-lg text-md px-5 py-2.5 mr-2 mb-2">
+					<i class="fa-solid fa-right-to-bracket"></i>
+					LOGIN
+				</a>
+			</div>
+		</div>
 
-    <div class="mt-12 sm:mt-28 p-1 sm:p-8 mb-8">
-        <p class="text-5xl text-green-600 font-bold font-copper leading-8">Access the online storage of</p>
-        <p class="text-5xl text-green-600 font-bold font-copper leading-8 mt-4">THESES</p>
-        <p class="text-5xl text-green-600 font-bold font-copper leading-8 mt-4">and</p>
-        <p class="text-5xl text-green-600 font-bold font-copper leading-8 mt-4">CAPSTONE PROJECTS</p>
-
-        <div class="mt-12">
-            <a href="{% url 'signup_stud' %}"
-                class="text-lg text-black font-bold bg-green-200 hover:bg-green-600 hover:text-white duration-300 focus:ring-4 border-2 border-green-600 rounded-lg px-5 py-2.5 mr-2 mb-2">SIGNUP</a>
-
-            <a href="{% url 'login' %}"
-                class=" text-black font-bold bg-green-200 hover:bg-green-600 hover:text-white duration-300 focus:ring-4 border-2 border-green-600 rounded-lg text-lg px-5 py-2.5 mr-2 mb-2">LOGIN</a>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
-</body>
-
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+	</body>
 </html>
